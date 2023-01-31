@@ -24,17 +24,17 @@ Spectrum eval_op::operator()(const DisneyDiffuse &bsdf) const {
 
     // Modified Schlick Fresnel
     Real F_D90 = Real(1) / Real(2) + Real(2) * eval_roughness * pow(half_angle, Real(2));
-    Real F_D_w_in = Real(1) + (F_D90 - Real(1)) * (Real(1) - pow(in_angle, 5));
-    Real F_D_w_out = Real(1) + (F_D90 - Real(1)) * (Real(1) - pow(out_angle, 5));
+    Real F_D_w_in = Real(1) + (F_D90 - Real(1)) * (pow(Real(1) - in_angle, 5));
+    Real F_D_w_out = Real(1) + (F_D90 - Real(1)) * (pow(Real(1) - out_angle, 5));
 
     // Base Diffuse
     Spectrum f_baseDiffuse = (eval_base_color / c_PI) * F_D_w_in * F_D_w_out * out_angle;
 
     // Lommel-Seeliger
     Real F_SS90 = eval_roughness * pow(half_angle, 2);
-    Real F_SS_w_in = Real(1) + (F_SS90 - 1) * pow((1 - in_angle), 5);
-    Real F_SS_w_out = Real(1) + (F_SS90 - 1) * pow((1 - out_angle), 5);
-    Real absorbtion = 1 / (in_angle + out_angle);
+    Real F_SS_w_in = Real(1) + (F_SS90 - Real(1)) * pow((Real(1) - in_angle), 5);
+    Real F_SS_w_out = Real(1) + (F_SS90 - Real(1)) * pow((Real(1) - out_angle), 5);
+    Real absorbtion = Real(1) / (in_angle + out_angle);
 
     // Subsurface
     Spectrum f_subsurface = (Real(1.25) * eval_base_color / c_PI) *
