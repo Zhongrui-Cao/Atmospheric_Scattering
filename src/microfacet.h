@@ -115,7 +115,7 @@ inline Real Disney_Smith(Real anisotropic, Real roughness, Vector3 w, Frame fram
 inline Real Clearcoat_GGX(Real gloss, Vector3 h_l) {
     Real a_g = (Real(1) - gloss) * Real(0.1) + gloss * Real(0.001);
     Real a_g_2 = pow(a_g, 2);
-    Real D_c = (a_g_2 - Real(1)) / (c_PI * log2(a_g_2) * (1 + (a_g_2 - 1) * (h_l.z)));
+    Real D_c = (a_g_2 - Real(1)) / (c_PI * log(a_g_2) * (1 + (a_g_2 - 1) * (h_l.z) * (h_l.z)));
 
     return D_c;
 }

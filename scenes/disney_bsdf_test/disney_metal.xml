@@ -13,11 +13,20 @@
 			<translate z="0.01"/>
 		</transform>
 
+	
 		<bsdf type="disneymetal">
 			<rgb name="baseColor" value="0.82 0.67 0.16"/>
-			<float name="roughness" value="0.2"/>
+			<float name="roughness" value="0.8"/>
 			<float name="anisotropic" value="0.8"/>
 		</bsdf>
+	<!--
+		<bsdf type="roughplastic">
+			<rgb name="diffuse_reflectance" value="0.82 0.67 0.16"/>
+			<rgb name="specular_reflectance" value="0.82 0.67 0.16"/>
+			<float name="roughness" value="0.01"/>
+			<float name="eta" value="0.5"/>
+		</bsdf>
+	-->
 	</shape>
 
 	<sensor type="perspective" id="Camera-camera">

@@ -13,15 +13,16 @@
 			<translate z="0.01"/>
 		</transform>
 
-<!-- 		<bsdf type="diffuse">
+		<bsdf type="diffuse">
 			<rgb name="reflectance" value="0.82 0.67 0.16"/>
-		</bsdf> -->
-
+		</bsdf>
+<!--
 		<bsdf type="disneydiffuse">
 			<rgb name="baseColor" value="0.82 0.67 0.16"/>
-			<float name="roughness" value="0.5"/>
+			<float name="roughness" value="0.9"/>
 			<float name="subsurface" value="0.5"/>
 		</bsdf>
+-->
 	</shape>
 
 	<sensor type="perspective" id="Camera-camera">

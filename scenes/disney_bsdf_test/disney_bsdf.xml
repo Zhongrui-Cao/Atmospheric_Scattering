@@ -16,11 +16,11 @@
 		<bsdf type="disneybsdf">
 			<rgb name="baseColor" value="0.82 0.67 0.16"/>
 			<float name="specularTransmission" value="0.5"/>
-			<float name="metallic" value="0.5"/>
+			<float name="metallic" value="0.2"/>
 			<float name="subsurface" value="0.5"/>
 			<float name="specular" value="0.5"/>
 			<float name="roughness" value="0.1"/>
-			<float name="specularTint" value="0.5"/>
+			<float name="specularTint" value="0.9"/>
 			<float name="anisotropic" value="0.5"/>
 			<float name="sheen" value="0.5"/>
 			<float name="sheenTint" value="0.5"/>
