@@ -18,6 +18,11 @@ struct TexturePool {
     std::vector<Mipmap3> image3s;
 };
 
+inline bool texture_id_exists(const TexturePool &pool, const std::string &texture_name) {
+    return pool.image1s_map.find(texture_name) != pool.image1s_map.end() ||
+           pool.image3s_map.find(texture_name) != pool.image3s_map.end();
+}
+
 inline int insert_image1(TexturePool &pool, const std::string &texture_name, const fs::path &filename) {
     if (pool.image1s_map.find(texture_name) != pool.image1s_map.end()) {
         // We don't check if img is the same as the one in the cache!
@@ -214,5 +219,13 @@ inline CheckerboardTexture<Spectrum> make_checkerboard_spectrum_texture(
         Real uscale = 1, Real vscale = 1,
         Real uoffset = 0, Real voffset = 0) {
     return CheckerboardTexture<Spectrum>{
+        color0, color1, uscale, vscale, uoffset, voffset};
+}
+
+inline CheckerboardTexture<Real> make_checkerboard_float_texture(
+        Real color0, Real color1,
+        Real uscale = 1, Real vscale = 1,
+        Real uoffset = 0, Real voffset = 0) {
+    return CheckerboardTexture<Real>{
         color0, color1, uscale, vscale, uoffset, voffset};
 }

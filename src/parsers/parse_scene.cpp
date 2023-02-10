@@ -283,6 +283,105 @@ Matrix4x4 parse_transform(pugi::xml_node node,
     return tform;
 }
 
+Spectrum parse_color(pugi::xml_node node,
+                     const std::map<std::string, std::string> &default_map) {
+    std::string type = node.name();
+    if (type == "spectrum") {
+        std::vector<std::pair<Real, Real>> spec =
+            parse_spectrum(node.attribute("value").value(), default_map);
+        if (spec.size() > 1) {
+            Vector3 xyz = integrate_XYZ(spec);
+            return fromRGB(XYZ_to_RGB(xyz));
+        } else if (spec.size() == 1) {
+            return fromRGB(Vector3{1, 1, 1});
+        } else {
+            return fromRGB(Vector3{0, 0, 0});
+        }
+    } else if (type == "rgb") {
+        return fromRGB(parse_vector3(node.attribute("value").value(), default_map));
+    } else if (type == "srgb") {
+        Vector3 srgb = parse_srgb(node.attribute("value").value(), default_map);
+        return fromRGB(sRGB_to_RGB(srgb));
+    } else if (type == "float") {
+        return make_const_spectrum(parse_float(node.attribute("value").value(), default_map));
+    } else {
+        Error(std::string("Unknown color type:") + type);
+        return make_zero_spectrum();
+    }
+}
+
+/// We don't load the images to memory at this stage. Only record their names.
+ParsedTexture parse_texture(pugi::xml_node node,
+                            const std::map<std::string, std::string> &default_map) {
+    std::string type = node.attribute("type").value();
+    if (type == "bitmap") {
+        std::string filename = "";
+        Real uscale = 1;
+        Real vscale = 1;
+        Real uoffset = 0;
+        Real voffset = 0;
+        for (auto child : node.children()) {
+            std::string name = child.attribute("name").value();
+            if (name == "filename") {
+                filename = parse_string(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "uvscale") {
+                uscale = vscale = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "uscale") {
+                uscale = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "vscale") {
+                vscale = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "uoffset") {
+                uoffset = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "voffset") {
+                voffset = parse_float(
+                    child.attribute("value").value(), default_map);
+            }
+        }
+        return ParsedTexture{TextureType::BITMAP, fs::path(filename),
+            make_zero_spectrum(), make_zero_spectrum(),
+            uscale, vscale, uoffset, voffset};
+    } else if (type == "checkerboard") {
+        Spectrum color0 = fromRGB(Vector3{Real(0.4), Real(0.4), Real(0.4)});
+        Spectrum color1 = fromRGB(Vector3{Real(0.2), Real(0.2), Real(0.2)});
+        Real uscale = 1;
+        Real vscale = 1;
+        Real uoffset = 0;
+        Real voffset = 0;
+        for (auto child : node.children()) {
+            std::string name = child.attribute("name").value();
+            if (name == "color0") {
+                color0 = parse_color(child, default_map);
+            } else if (name == "color1") {
+                color1 = parse_color(child, default_map);
+            } else if (name == "uvscale") {
+                uscale = vscale = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "uscale") {
+                uscale = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "vscale") {
+                vscale = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "uoffset") {
+                uoffset = parse_float(
+                    child.attribute("value").value(), default_map);
+            } else if (name == "voffset") {
+                voffset = parse_float(
+                    child.attribute("value").value(), default_map);
+            }
+        }
+        return ParsedTexture{TextureType::CHECKERBOARD,
+            "", color0, color1, uscale, vscale, uoffset, voffset};
+    }
+    Error(std::string("Unknown texture type: ") + type);
+    return ParsedTexture{};
+}
+
 Texture<Spectrum> parse_spectrum_texture(
         pugi::xml_node node,
         const std::map<std::string /* name id */, ParsedTexture> &texture_map,
@@ -324,6 +423,24 @@ Texture<Spectrum> parse_spectrum_texture(
         } else {
             return make_constant_spectrum_texture(fromRGB(Vector3{0, 0, 0}));
         }
+    } else if (type == "texture") {
+        ParsedTexture t = parse_texture(node, default_map);
+        // increment ref_id_counter until we can't find the name in texture_pool
+        static int ref_id_counter = 0; // should switch to atomic<int> if we parse scenes using multiple threads
+        std::string tmp_ref_name = "$inline_spectrum_texture";
+        while (texture_id_exists(texture_pool, tmp_ref_name + std::to_string(ref_id_counter))) {
+            ref_id_counter++;
+        }
+        tmp_ref_name = tmp_ref_name + std::to_string(ref_id_counter);
+        if (t.type == TextureType::BITMAP) {
+            return make_image_spectrum_texture(
+                tmp_ref_name, t.filename, texture_pool, t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else if (t.type == TextureType::CHECKERBOARD) {
+            return make_checkerboard_spectrum_texture(
+                t.color0, t.color1, t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else {
+            return make_constant_spectrum_texture(fromRGB(Vector3{0, 0, 0}));
+        }
     } else {
         Error(std::string("Unknown spectrum texture type:") + type);
         return ConstantTexture<Spectrum>{make_zero_spectrum()};
@@ -344,41 +461,39 @@ Texture<Real> parse_float_texture(
             Error(std::string("Texture not found. ID = ") + ref_id);
         }
         const ParsedTexture t = t_it->second;
-        return make_image_float_texture(
-            ref_id, imread1(t.filename), texture_pool, t.uscale, t.vscale);
+        if (t.type == TextureType::BITMAP) {
+            return make_image_float_texture(
+                ref_id, t.filename, texture_pool, t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else if (t.type == TextureType::CHECKERBOARD) {
+            return make_checkerboard_float_texture(
+                avg(t.color0), avg(t.color1), t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else {
+            return make_constant_float_texture(0);
+        }
     } else if (type == "float") {
         return make_constant_float_texture(
             parse_float(node.attribute("value").value(), default_map));
+    } else if (type == "texture") {
+        ParsedTexture t = parse_texture(node, default_map);
+        // increment ref_id_counter until we can't find the name in texture_pool
+        static int ref_id_counter = 0; // should switch to atomic<int> if we parse scenes using multiple threads
+        std::string tmp_ref_name = "$inline_float_texture";
+        while (texture_id_exists(texture_pool, tmp_ref_name + std::to_string(ref_id_counter))) {
+            ref_id_counter++;
+        }
+        tmp_ref_name = tmp_ref_name + std::to_string(ref_id_counter);
+        if (t.type == TextureType::BITMAP) {
+            return make_image_float_texture(
+                tmp_ref_name, t.filename, texture_pool, t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else if (t.type == TextureType::CHECKERBOARD) {
+            return make_checkerboard_float_texture(
+                avg(t.color0), avg(t.color1), t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else {
+            return make_constant_float_texture(0);
+        }
     } else {
         Error(std::string("Unknown float texture type:") + type);
         return make_constant_float_texture(Real(0));
-    }
-}
-
-Spectrum parse_color(pugi::xml_node node,
-                     const std::map<std::string, std::string> &default_map) {
-    std::string type = node.name();
-    if (type == "spectrum") {
-        std::vector<std::pair<Real, Real>> spec =
-            parse_spectrum(node.attribute("value").value(), default_map);
-        if (spec.size() > 1) {
-            Vector3 xyz = integrate_XYZ(spec);
-            return fromRGB(XYZ_to_RGB(xyz));
-        } else if (spec.size() == 1) {
-            return fromRGB(Vector3{1, 1, 1});
-        } else {
-            return fromRGB(Vector3{0, 0, 0});
-        }
-    } else if (type == "rgb") {
-        return fromRGB(parse_vector3(node.attribute("value").value(), default_map));
-    } else if (type == "srgb") {
-        Vector3 srgb = parse_srgb(node.attribute("value").value(), default_map);
-        return fromRGB(sRGB_to_RGB(srgb));
-    } else if (type == "float") {
-        return make_const_spectrum(parse_float(node.attribute("value").value(), default_map));
-    } else {
-        Error(std::string("Unknown color type:") + type);
-        return make_zero_spectrum();
     }
 }
 
@@ -731,6 +846,72 @@ std::tuple<Camera, std::string /* output filename */, ParsedSampler>
                            filename, sampler);
 }
 
+Texture<Real> alpha_to_roughness(pugi::xml_node node,
+                                 const std::map<std::string /* name id */, ParsedTexture> &texture_map,
+                                 TexturePool &texture_pool,
+                                 const std::map<std::string, std::string> &default_map) {
+    // Alpha in microfacet models requires special treatment since we need to convert
+    // the values to roughness
+    std::string type = node.name();
+    if (type == "ref") {
+        // referencing a texture
+        std::string ref_id = node.attribute("id").value();
+        auto t_it = texture_map.find(ref_id);
+        if (t_it == texture_map.end()) {
+            Error(std::string("Texture not found. ID = ") + ref_id);
+        }
+        const ParsedTexture t = t_it->second;
+        if (t.type == TextureType::BITMAP) {
+            Image1 alpha = imread1(t.filename);
+            // Convert alpha to roughness.
+            Image1 roughness_img(alpha.width, alpha.height);
+            for (int i = 0; i < alpha.width * alpha.height; i++) {
+                roughness_img.data[i] = sqrt(alpha.data[i]);
+            }
+            return make_image_float_texture(
+                ref_id, roughness_img, texture_pool, t.uscale, t.vscale);
+        } else if (t.type == TextureType::CHECKERBOARD) {
+            Real roughness0 = sqrt(avg(t.color0));
+            Real roughness1 = sqrt(avg(t.color1));
+            return make_checkerboard_float_texture(
+                roughness0, roughness1, t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else {
+            return make_constant_float_texture(Real(0.1));
+        }
+    } else if (type == "float") {
+        Real alpha = parse_float(node.attribute("value").value(), default_map);
+        return make_constant_float_texture(sqrt(alpha));
+    } else if (type == "texture") {
+        ParsedTexture t = parse_texture(node, default_map);
+        // increment ref_id_counter until we can't find the name in texture_pool
+        static int ref_id_counter = 0; // should switch to atomic<int> if we parse scenes using multiple threads
+        std::string tmp_ref_name = "$inline_alpha_texture";
+        while (texture_id_exists(texture_pool, tmp_ref_name + std::to_string(ref_id_counter))) {
+            ref_id_counter++;
+        }
+        tmp_ref_name = tmp_ref_name + std::to_string(ref_id_counter);
+        if (t.type == TextureType::BITMAP) {
+            Image1 alpha = imread1(t.filename);
+            // Convert alpha to roughness.
+            Image1 roughness_img(alpha.width, alpha.height);
+            for (int i = 0; i < alpha.width * alpha.height; i++) {
+                roughness_img.data[i] = sqrt(alpha.data[i]);
+            }
+            return make_image_float_texture(
+                tmp_ref_name, t.filename, texture_pool, t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else if (t.type == TextureType::CHECKERBOARD) {
+            Real roughness0 = sqrt(avg(t.color0));
+            Real roughness1 = sqrt(avg(t.color1));
+            return make_checkerboard_float_texture(
+                roughness0, roughness1, t.uscale, t.vscale, t.uoffset, t.voffset);
+        } else {
+            return make_constant_float_texture(Real(0.1));
+        }
+    } else {
+        Error(std::string("Unknown float texture type:") + type);
+    }
+}
+
 std::tuple<std::string /* ID */, Material> parse_bsdf(
         pugi::xml_node node,
         const std::map<std::string /* name id */, ParsedTexture> &texture_map,
@@ -781,31 +962,7 @@ std::tuple<std::string /* ID */, Material> parse_bsdf(
                 specular_reflectance = parse_spectrum_texture(
                     child, texture_map, texture_pool, default_map);
             } else if (name == "alpha") {
-                // Alpha requires special treatment since we need to convert
-                // the values to roughness
-                std::string type = child.name();
-                if (type == "ref") {
-                    // referencing a texture
-                    std::string ref_id = child.attribute("id").value();
-                    auto t_it = texture_map.find(ref_id);
-                    if (t_it == texture_map.end()) {
-                        Error(std::string("Texture not found. ID = ") + ref_id);
-                    }
-                    const ParsedTexture t = t_it->second;
-                    Image1 alpha = imread1(t.filename);
-                    // Convert alpha to roughness.
-                    Image1 roughness_img(alpha.width, alpha.height);
-                    for (int i = 0; i < alpha.width * alpha.height; i++) {
-                        roughness_img.data[i] = sqrt(alpha.data[i]);
-                    }
-                    roughness = make_image_float_texture(
-                        ref_id, roughness_img, texture_pool, t.uscale, t.vscale);
-                } else if (type == "float") {
-                    Real alpha = parse_float(child.attribute("value").value(), default_map);
-                    roughness = make_constant_float_texture(sqrt(alpha));
-                } else {
-                    Error(std::string("Unknown float texture type:") + type);
-                }
+                roughness = alpha_to_roughness(child, texture_map, texture_pool, default_map);
             } else if (name == "roughness") {
                 roughness = parse_float_texture(child, texture_map, texture_pool, default_map);
             } else if (name == "intIOR" || name == "int_ior") {
@@ -837,29 +994,7 @@ std::tuple<std::string /* ID */, Material> parse_bsdf(
                 specular_transmittance = parse_spectrum_texture(
                     child, texture_map, texture_pool, default_map);
             } else if (name == "alpha") {
-                std::string type = child.name();
-                if (type == "ref") {
-                    // referencing a texture
-                    std::string ref_id = child.attribute("id").value();
-                    auto t_it = texture_map.find(ref_id);
-                    if (t_it == texture_map.end()) {
-                        Error(std::string("Texture not found. ID = ") + ref_id);
-                    }
-                    const ParsedTexture t = t_it->second;
-                    Image1 alpha = imread1(t.filename);
-                    // Convert alpha to roughness.
-                    Image1 roughness_img(alpha.width, alpha.height);
-                    for (int i = 0; i < alpha.width * alpha.height; i++) {
-                        roughness_img.data[i] = sqrt(alpha.data[i]);
-                    }
-                    roughness = make_image_float_texture(
-                        ref_id, roughness_img, texture_pool, t.uscale, t.vscale);
-                } else if (type == "float") {
-                    Real alpha = std::stof(child.attribute("value").value());
-                    roughness = make_constant_float_texture(sqrt(alpha));
-                } else {
-                    Error(std::string("Unknown float texture type:") + type);
-                }
+                roughness = alpha_to_roughness(child, texture_map, texture_pool, default_map);
             } else if (name == "roughness") {
                 roughness = parse_float_texture(
                     child, texture_map, texture_pool, default_map);
@@ -1269,78 +1404,6 @@ Shape parse_shape(pugi::xml_node node,
     }
 
     return shape;
-}
-
-/// We don't load the images to memory at this stage. Only record their names.
-ParsedTexture parse_texture(pugi::xml_node node,
-                            const std::map<std::string, std::string> &default_map) {
-    std::string type = node.attribute("type").value();
-    if (type == "bitmap") {
-        std::string filename = "";
-        Real uscale = 1;
-        Real vscale = 1;
-        Real uoffset = 0;
-        Real voffset = 0;
-        for (auto child : node.children()) {
-            std::string name = child.attribute("name").value();
-            if (name == "filename") {
-                filename = parse_string(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "uvscale") {
-                uscale = vscale = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "uscale") {
-                uscale = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "vscale") {
-                vscale = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "uoffset") {
-                uoffset = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "voffset") {
-                voffset = parse_float(
-                    child.attribute("value").value(), default_map);
-            }
-        }
-        return ParsedTexture{TextureType::BITMAP, fs::path(filename),
-            make_zero_spectrum(), make_zero_spectrum(),
-            uscale, vscale, uoffset, voffset};
-    } else if (type == "checkerboard") {
-        Spectrum color0 = fromRGB(Vector3{Real(0.4), Real(0.4), Real(0.4)});
-        Spectrum color1 = fromRGB(Vector3{Real(0.2), Real(0.2), Real(0.2)});
-        Real uscale = 1;
-        Real vscale = 1;
-        Real uoffset = 0;
-        Real voffset = 0;
-        for (auto child : node.children()) {
-            std::string name = child.attribute("name").value();
-            if (name == "color0") {
-                color0 = parse_color(child, default_map);
-            } else if (name == "color1") {
-                color1 = parse_color(child, default_map);
-            } else if (name == "uvscale") {
-                uscale = vscale = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "uscale") {
-                uscale = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "vscale") {
-                vscale = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "uoffset") {
-                uoffset = parse_float(
-                    child.attribute("value").value(), default_map);
-            } else if (name == "voffset") {
-                voffset = parse_float(
-                    child.attribute("value").value(), default_map);
-            }
-        }
-        return ParsedTexture{TextureType::CHECKERBOARD,
-            "", color0, color1, uscale, vscale, uoffset, voffset};
-    }
-    Error(std::string("Unknown texture type: ") + type);
-    return ParsedTexture{};
 }
 
 Scene parse_scene(pugi::xml_node node, const RTCDevice &embree_device) {
