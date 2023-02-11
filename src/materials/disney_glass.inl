@@ -95,8 +95,6 @@ Real pdf_sample_bsdf_op::operator()(const DisneyGlass &bsdf) const {
     Real eta = dot(vertex.geometric_normal, dir_in) > 0 ? bsdf.eta : 1 / bsdf.eta;
     Real roughness = eval(
         bsdf.roughness, vertex.uv, vertex.uv_screen_size, texture_pool);
-    Spectrum baseColor = eval(
-        bsdf.base_color, vertex.uv, vertex.uv_screen_size, texture_pool);
     Real anisotropic = eval(
         bsdf.anisotropic, vertex.uv, vertex.uv_screen_size, texture_pool);
 

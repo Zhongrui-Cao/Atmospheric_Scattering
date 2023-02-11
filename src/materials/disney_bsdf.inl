@@ -1,8 +1,6 @@
 #include "../microfacet.h"
 
 Spectrum eval_op::operator()(const DisneyBSDF &bsdf) const {
-    bool reflect = dot(vertex.geometric_normal, dir_in) *
-                   dot(vertex.geometric_normal, dir_out) > 0;
     // Flip the shading frame if it is inconsistent with the geometry normal
     Frame frame = vertex.shading_frame;
     if (dot(frame.n, dir_in) * dot(vertex.geometric_normal, dir_in) < 0) {
@@ -14,7 +12,6 @@ Spectrum eval_op::operator()(const DisneyBSDF &bsdf) const {
     
     DisneyDiffuse   diffuse   = { bsdf.base_color, bsdf.roughness, bsdf.subsurface };
     DisneySheen     sheen     = { bsdf.base_color, bsdf.sheen_tint };
-    DisneyMetal     metal     = { bsdf.base_color, bsdf.roughness, bsdf.anisotropic };
     DisneyClearcoat clearcoat = { bsdf.clearcoat_gloss };
     DisneyGlass     glass     = { bsdf.base_color, bsdf.roughness, bsdf.anisotropic, bsdf.eta };
 
@@ -39,7 +36,6 @@ Spectrum eval_op::operator()(const DisneyBSDF &bsdf) const {
     
     Real eta = dot(vertex.geometric_normal, dir_in) > 0 ? bsdf.eta : 1 / bsdf.eta;
     Vector3 h = normalize(dir_in + dir_out);
-    Real half_angle = abs(dot(h, dir_out));
     Real in_angle = abs(dot(frame.n, dir_in));
 
     //// For modified metal ////
@@ -116,7 +112,6 @@ Real pdf_sample_bsdf_op::operator()(const DisneyBSDF &bsdf) const {
     pdf_sample_bsdf_op pdf = { dir_in, dir_out, vertex, texture_pool, dir };
 
     DisneyDiffuse   diffuse   = { bsdf.base_color, bsdf.roughness, bsdf.subsurface };
-    DisneySheen     sheen     = { bsdf.base_color, bsdf.sheen_tint };
     DisneyMetal     metal     = { bsdf.base_color, bsdf.roughness, bsdf.anisotropic };
     DisneyClearcoat clearcoat = { bsdf.clearcoat_gloss };
     DisneyGlass     glass     = { bsdf.base_color, bsdf.roughness, bsdf.anisotropic, bsdf.eta };
@@ -161,7 +156,6 @@ sample_bsdf_op::operator()(const DisneyBSDF& bsdf) const {
     sample_bsdf_op sample = { dir_in, vertex, texture_pool, rnd_param_uv, rnd_param_w, dir };
 
     DisneyDiffuse   diffuse   = { bsdf.base_color, bsdf.roughness, bsdf.subsurface };
-    DisneySheen     sheen     = { bsdf.base_color, bsdf.sheen_tint };
     DisneyMetal     metal     = { bsdf.base_color, bsdf.roughness, bsdf.anisotropic };
     DisneyClearcoat clearcoat = { bsdf.clearcoat_gloss };
     DisneyGlass     glass     = { bsdf.base_color, bsdf.roughness, bsdf.anisotropic, bsdf.eta };
@@ -188,7 +182,6 @@ sample_bsdf_op::operator()(const DisneyBSDF& bsdf) const {
     Real diffuse_cut = diffuseWeight;
     Real metal_cut = diffuse_cut + metalWeight;
     Real glass_cut = metal_cut + glassWeight;
-    Real clear_cut = glass_cut + clearcoatWeight;
 
     //printf("random w=%f \n", rnd_param_w);
 

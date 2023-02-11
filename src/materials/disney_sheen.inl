@@ -20,7 +20,6 @@ Spectrum eval_op::operator()(const DisneySheen &bsdf) const {
     sheenTint = std::clamp(sheenTint, Real(0.01), Real(1));
     Vector3 h = normalize(dir_in + dir_out);
     Real half_angle = abs(dot(h, dir_out));
-    Real in_angle = abs(dot(frame.n, dir_in));
     Real out_angle = abs(dot(frame.n, dir_out));
     Real luminance_basecolor = luminance(baseColor);
 
