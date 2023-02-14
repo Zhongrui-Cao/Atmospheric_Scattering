@@ -151,6 +151,11 @@ Spectrum vol_path_tracing_2(const Scene &scene,
 
 }
 
+// vol_3 helper
+int update_medium(PathVertex isect, Ray ray){
+
+}
+
 // The third volumetric renderer (not so simple anymore): 
 // multiple monochromatic homogeneous volumes with multiple scattering
 // no need to handle surface lighting, only directly visible light source
@@ -158,6 +163,84 @@ Spectrum vol_path_tracing_3(const Scene &scene,
                             int x, int y, /* pixel coordinates */
                             pcg32_state &rng) {
     // Homework 2: implememt this!
+
+    int w = scene.camera.width, h = scene.camera.height;
+    Vector2 screen_pos((x + next_pcg32_real<Real>(rng)) / w,
+                       (y + next_pcg32_real<Real>(rng)) / h);
+    Ray ray = sample_primary(scene.camera, screen_pos);
+    RayDifferential ray_diff = RayDifferential{Real(0), Real(0)};
+
+    int current_medium = scene.camera.medium_id;
+    Real current_path_throughput = 1;
+    Spectrum radiance = make_zero_spectrum();
+    int bounces = 0;
+    int max_depth = scene.options.max_depth;
+
+    while(true) {
+        bool scatter = false;
+        std::optional<PathVertex> vertex_ = intersect(scene, ray, ray_diff);
+        Real transmittance = 1;
+        Real trans_pdf = 1;
+        if (current_medium) {
+            Real u = next_pcg32_real<Real>(rng);
+            Medium medium = scene.media[current_medium];
+            Real sigma_a = get_sigma_a(medium, Vector3(1,2,3)).x;
+            Real sigma_s = get_sigma_s(medium, Vector3(1,2,3)).x;
+            Real sigma_t = sigma_a + sigma_s;
+            Real t = - log(1.0 - u) / sigma_t;
+
+            //ray hit
+            if (vertex_) {
+                PathVertex vertex = *vertex_;
+                Real t_hit = distance(ray.org, vertex.position);
+                // if t not on surface
+                if (t < t_hit) {
+                    scatter = true;
+                    trans_pdf = exp(-sigma_t * t) * sigma_t;
+                    transmittance = exp(-sigma_t * t);
+                } else {
+                    scatter = false;
+                    trans_pdf = exp(-sigma_t * t_hit);
+                    transmittance = exp(-sigma_t * t_hit);
+                }
+            } else {
+                scatter = true;
+                trans_pdf = exp(-sigma_t * t) * sigma_t;
+                transmittance = exp(-sigma_t * t);
+            }
+            ray.org = ray.org + t * ray.dir;
+        }
+        current_path_throughput *= (transmittance / trans_pdf);
+
+        if (!scatter) {
+            PathVertex vertex = *vertex_;
+            radiance += current_path_throughput * emission(vertex, -ray.dir, scene);
+        }
+
+        if (bounces == max_depth && max_depth != -1) {
+            break;
+        }
+
+        if (!scatter && vertex_) {
+            PathVertex vertex = *vertex_;
+            // if index matching surface
+            if (vertex.material_id == -1) {
+                current_medium = update_medium(vertex, ray);
+                bounces += 1;
+                continue;
+            }
+        }
+
+        if (scatter) {
+            
+        }
+    }
+
+    
+
+
+
+
     return make_zero_spectrum();
 }
 
