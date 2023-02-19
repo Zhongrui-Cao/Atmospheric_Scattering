@@ -521,7 +521,7 @@ Spectrum vol_path_tracing_4(const Scene &scene,
     return radiance;
 }
 
-Spectrum nee_brdf(Vector3 p, Vector3 omega, int current_medium, int bounces, Light light, Scene scene, pcg32_state& rng, int light_id) {
+Spectrum nee_brdf(Vector3 p, Vector3 omega, int current_medium, int bounces, Light light, Scene scene, pcg32_state& rng, int light_id, PathVertex vertex) {
 
     PointAndNormal p_prime = sample_point_on_light(light, p, 
                                 Vector2(next_pcg32_real<Real>(rng), next_pcg32_real<Real>(rng)),
@@ -581,16 +581,17 @@ Spectrum nee_brdf(Vector3 p, Vector3 omega, int current_medium, int bounces, Lig
         Real denom = distance_squared(orig_p, p_prime.position);
         Real top = abs(dot(omega_prime, p_prime.normal));
         Real G = top / denom;
-        PhaseFunction pf = get_phase_function(scene.media[current_medium]);
 
-        Spectrum f = eval(pf, omega, omega_prime);
+        const Material& mat = scene.materials[vertex.material_id];
+
+        Spectrum f = eval(mat, omega, omega_prime, vertex, scene.texture_pool);
         Spectrum Le = emission(light, omega_prime, Real(0), p_prime, scene);
         Real pdf_nee = light_pmf(scene, light_id) *
             pdf_point_on_light(light, p_prime, orig_p, scene);
         
         Spectrum contrib = T_light * G * f * Le / pdf_nee;
-        Real pdf_phase = pdf_sample_phase(pf, omega, omega_prime) * G * p_trans_dir;
-        Real w = (pdf_nee * pdf_nee) / (pdf_nee * pdf_nee + pdf_phase * pdf_phase);
+        Real pdf_bsdf = pdf_sample_bsdf(mat, omega, omega_prime, vertex, scene.texture_pool) * G * p_trans_dir;
+        Real w = (pdf_nee * pdf_nee) / (pdf_nee * pdf_nee + pdf_bsdf * pdf_bsdf);
 
         return w * contrib;
     }
@@ -743,7 +744,14 @@ Spectrum vol_path_tracing_5(const Scene &scene,
             //handle brdf
 
             if(vertex_) {
+
                 PathVertex vertex = *vertex_;
+
+                int light_id = sample_light(scene, next_pcg32_real<Real>(rng));
+                Spectrum nee_out = nee_brdf(ray.org, -ray.dir, current_medium, bounces, scene.lights[light_id], scene, rng, light_id, vertex);
+
+                radiance += current_path_throughput * nee_out;
+                
                 const Material &mat = scene.materials[vertex.material_id];
                 Vector3 dir_view = -ray.dir;
                 Vector2 bsdf_rnd_param_uv{next_pcg32_real<Real>(rng), next_pcg32_real<Real>(rng)};
@@ -763,27 +771,19 @@ Spectrum vol_path_tracing_5(const Scene &scene,
                 const BSDFSampleRecord &bsdf_sample = *bsdf_sample_;
                 Vector3 dir_bsdf = bsdf_sample.dir_out;
 
-                Ray bsdf_ray{vertex.position, dir_bsdf, get_intersection_epsilon(scene), infinity<Real>()};
-                std::optional<PathVertex> bsdf_vertex = intersect(scene, bsdf_ray);
+                ray = Ray{ray.org, dir_bsdf, get_intersection_epsilon(scene), infinity<Real>()};
+                
+                current_medium = update_medium(vertex, ray);
 
-                current_medium = update_medium(vertex, bsdf_ray);
-
-                Real G = 0;
-                if (bsdf_vertex) {
-                    G = fabs(dot(dir_bsdf, bsdf_vertex->geometric_normal)) /
-                        distance_squared(bsdf_vertex->position, vertex.position);
-                }
-
-                Spectrum f = eval(mat, dir_view, dir_bsdf, vertex, scene.texture_pool);
-                Real p2 = pdf_sample_bsdf(mat, dir_view, dir_bsdf, vertex, scene.texture_pool);
-                if (p2 <= 0) {
-                    // Numerical issue -- we generated some invalid rays.
-                    break;
-                }
-
-                p2 *= G;
+                Spectrum bsdf = eval(mat, dir_view, dir_bsdf, vertex, scene.texture_pool);
+                Real bsdf_pdf = pdf_sample_bsdf(mat, dir_view, dir_bsdf, vertex, scene.texture_pool);
+                current_path_throughput *= bsdf / bsdf_pdf;
 
 
+                //update cache
+                dir_pdf = bsdf_pdf;
+                nee_p_cache = ray.org;
+                multi_trans_pdf = Real(1);
 
             }
         }
