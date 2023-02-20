@@ -344,13 +344,13 @@ Spectrum nee(Vector3 p, Vector3 omega, int current_medium, int bounces, Light li
         Real G = top / denom;
         PhaseFunction pf = get_phase_function(scene.media[current_medium]);
 
-        Spectrum f = eval(pf, omega, omega_prime);
+        Spectrum f = eval(pf, omega, -omega_prime);
         Spectrum Le = emission(light, omega_prime, Real(0), p_prime, scene);
         Real pdf_nee = light_pmf(scene, light_id) *
             pdf_point_on_light(light, p_prime, orig_p, scene);
         
         Spectrum contrib = T_light * G * f * Le / pdf_nee;
-        Real pdf_phase = pdf_sample_phase(pf, omega, omega_prime) * G * p_trans_dir;
+        Real pdf_phase = pdf_sample_phase(pf, omega, -omega_prime) * G * p_trans_dir;
         Real w = (pdf_nee * pdf_nee) / (pdf_nee * pdf_nee + pdf_phase * pdf_phase);
 
         return w * contrib;
@@ -521,7 +521,7 @@ Spectrum vol_path_tracing_4(const Scene &scene,
     return radiance;
 }
 
-Spectrum nee_brdf(Vector3 p, Vector3 omega, int current_medium, int bounces, Light light, Scene scene, pcg32_state& rng, int light_id, PathVertex vertex) {
+Spectrum nee_brdf(Vector3 p, Vector3 omega, int current_medium, int bounces, Light light, Scene scene, pcg32_state& rng, int light_id, PathVertex v) {
 
     PointAndNormal p_prime = sample_point_on_light(light, p, 
                                 Vector2(next_pcg32_real<Real>(rng), next_pcg32_real<Real>(rng)),
@@ -582,15 +582,15 @@ Spectrum nee_brdf(Vector3 p, Vector3 omega, int current_medium, int bounces, Lig
         Real top = abs(dot(omega_prime, p_prime.normal));
         Real G = top / denom;
 
-        const Material& mat = scene.materials[vertex.material_id];
+        const Material& mat = scene.materials[v.material_id];
 
-        Spectrum f = eval(mat, omega, omega_prime, vertex, scene.texture_pool);
+        Spectrum f = eval(mat, omega, -omega_prime, v, scene.texture_pool);
         Spectrum Le = emission(light, omega_prime, Real(0), p_prime, scene);
         Real pdf_nee = light_pmf(scene, light_id) *
             pdf_point_on_light(light, p_prime, orig_p, scene);
         
         Spectrum contrib = T_light * G * f * Le / pdf_nee;
-        Real pdf_bsdf = pdf_sample_bsdf(mat, omega, omega_prime, vertex, scene.texture_pool) * G * p_trans_dir;
+        Real pdf_bsdf = pdf_sample_bsdf(mat, omega, -omega_prime, v, scene.texture_pool) * G * p_trans_dir;
         Real w = (pdf_nee * pdf_nee) / (pdf_nee * pdf_nee + pdf_bsdf * pdf_bsdf);
 
         return w * contrib;
@@ -648,7 +648,6 @@ Spectrum vol_path_tracing_5(const Scene &scene,
             Real sigma_s = get_sigma_s(medium, Vector3(1, 2, 3)).x;
             Real sigma_t = sigma_a + sigma_s;
             t = -log(1.0 - u) / sigma_t;
-
             //ray hit
             if (vertex_) {
                 PathVertex vertex = *vertex_;
@@ -751,6 +750,7 @@ Spectrum vol_path_tracing_5(const Scene &scene,
                 Spectrum nee_out = nee_brdf(ray.org, -ray.dir, current_medium, bounces, scene.lights[light_id], scene, rng, light_id, vertex);
 
                 radiance += current_path_throughput * nee_out;
+                never_scatter = false;
                 
                 const Material &mat = scene.materials[vertex.material_id];
                 Vector3 dir_view = -ray.dir;
