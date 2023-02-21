@@ -100,3 +100,9 @@ case?
 something that is biased but faster? How would you do it?  
 
     I think for the sake of research and physically correct rendering, it is important to have unbiased solution. For example I imagine differentiable rendering for volume will require unbiasness. However if we are just visuallizing a simulation or rendering for art, a fast but biased approximation will make sense, because we don't care about the correctness but the time and cost and artistic result.
+
+## Bonus
+
+For the bonus, I implemented heterogeneous volumes, but there is still some artifact that I did not have time to debug. I included the rendered image.  
+
+I also disigned my own scene. I included the scene and rendering in the zip file.
