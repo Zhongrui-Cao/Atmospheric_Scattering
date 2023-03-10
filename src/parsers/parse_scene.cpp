@@ -685,6 +685,8 @@ PhaseFunction parse_phase_function(pugi::xml_node node,
             }
         }
         return HenyeyGreenstein{g};
+    } else if (type == "rayleigh") {
+        return Rayleigh{};
     } else {
         Error(std::string("Unrecognized phase function:") + type);
     }

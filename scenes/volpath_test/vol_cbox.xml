@@ -10,6 +10,10 @@
 		<rgb name="sigmaA" value="0.5 0.5 0.5"/>
 		<rgb name="sigmaS" value="1.0 1.0 1.0"/>
 		<float name="scale" value="0.001"/>
+
+		<phase type="rayleigh">
+		</phase>
+		
 	</medium>
 
 	<sensor type="perspective">

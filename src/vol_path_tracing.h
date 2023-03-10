@@ -930,6 +930,7 @@ Spectrum vol_path_tracing_5(const Scene &scene,
             dir_pdf = p2;
             // Need to remember multiplying the scattering coefficient!
             current_path_throughput *= (f / p2);
+            never_scatter = false;
         }
 
         // Update rays/current_path_throughput/current_pdf
