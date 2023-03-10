@@ -3,6 +3,7 @@
 struct eval_op {
     Spectrum operator()(const IsotropicPhase &p) const;
     Spectrum operator()(const HenyeyGreenstein &p) const;
+    Spectrum operator()(const Rayleigh& p) const;
 
     const Vector3 &dir_in;
     const Vector3 &dir_out;
@@ -11,6 +12,7 @@ struct eval_op {
 struct sample_phase_function_op {
     std::optional<Vector3> operator()(const IsotropicPhase &p) const;
     std::optional<Vector3> operator()(const HenyeyGreenstein &p) const;
+    std::optional<Vector3> operator()(const Rayleigh& p) const;
 
     const Vector3 &dir_in;
     const Vector2 &rnd_param;
@@ -19,6 +21,7 @@ struct sample_phase_function_op {
 struct pdf_sample_phase_op {
     Real operator()(const IsotropicPhase &p) const;
     Real operator()(const HenyeyGreenstein &p) const;
+    Real operator()(const Rayleigh& p) const;
 
     const Vector3 &dir_in;
     const Vector3 &dir_out;
@@ -26,6 +29,7 @@ struct pdf_sample_phase_op {
 
 #include "phase_functions/isotropic.inl"
 #include "phase_functions/henyeygreenstein.inl"
+#include "phase_functions/rayleigh.inl"
 
 Spectrum eval(const PhaseFunction &phase_function,
               const Vector3 &dir_in,

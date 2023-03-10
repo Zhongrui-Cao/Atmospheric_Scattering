@@ -51,6 +51,7 @@ set(SRCS src/3rdparty/miniz.h
          src/parsers/parse_scene.h
          src/phase_functions/isotropic.inl
          src/phase_functions/henyeygreenstein.inl
+         src/phase_functions/rayleigh.inl
          src/shapes/sphere.inl
          src/shapes/triangle_mesh.inl
          src/camera.h

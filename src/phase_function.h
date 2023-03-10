@@ -13,7 +13,10 @@ struct HenyeyGreenstein {
     Real g;
 };
 
-using PhaseFunction = std::variant<IsotropicPhase, HenyeyGreenstein>;
+struct Rayleigh {
+};
+
+using PhaseFunction = std::variant<IsotropicPhase, HenyeyGreenstein, Rayleigh>;
 
 Spectrum eval(const PhaseFunction &phase_function,
               const Vector3 &dir_in,
