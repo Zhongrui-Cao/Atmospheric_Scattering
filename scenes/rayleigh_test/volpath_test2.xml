@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<scene version="0.5.0">
+	<integrator type="volpath">
+		<integer name="maxDepth" value="2"/>
+		<integer name="version" value="2"/>
+	</integrator>
+
+	<medium type="homogeneous" id="medium">
+		<rgb name="sigmaA" value="0.1 0.1 0.1"/>
+		<rgb name="sigmaS" value="0.7 0.7 0.7"/>
+		<float name="scale" value="1"/>
+
+<!-- 		<phase type="hg">
+			<float name="g" value="0.5"/>
+		</phase> -->
+	</medium>
+
+	<shape type="sphere">
+		<point name="center" x="0" y="0" z="0"/>
+		<float name="radius" value="1.0"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="0.4 2.32 3.2"/>
+		</emitter>
+
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.0 0.0 0.0"/>
+		</bsdf>
+
+		<ref name="exterior" id="medium"/>
+	</shape>
+
+	<shape type="sphere">
+		<point name="center" x="-3" y="0" z="-1.5"/>
+		<float name="radius" value="1.0"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="24, 10, 24"/>
+		</emitter>
+
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.0 0.0 0.0"/>
+		</bsdf>
+
+		<ref name="exterior" id="medium"/>
+	</shape>
+
+	<sensor type="perspective">
+		<string name="fovAxis" value="x"/>
+		<float name="fov" value="45"/>
+		<transform name="toWorld">
+			<lookAt target="0, 0, 0" origin="0, 0, -3" up="0, 1, 0"/>
+		</transform>
+
+		<sampler type="independent">
+			<integer name="sampleCount" value="1024"/>
+		</sampler>
+
+		<film type="hdrfilm" id="film">
+			<integer name="width" value="512"/>
+			<integer name="height" value="512"/>
+			<string name="pixelFormat" value="rgb"/>
+			<boolean name="banner" value="false"/>
+
+			<rfilter type="gaussian"/>
+		</film>
+
+		<ref id="medium"/>
+	</sensor>
+</scene>

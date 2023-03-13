@@ -71,6 +71,7 @@ set(SRCS src/3rdparty/miniz.h
          src/path_tracing.h
          src/phase_function.h
          src/vol_path_tracing.h
+         src/vol_path_rayleigh.h
          src/volume.h
          src/point_and_normal.h
          src/ray.h

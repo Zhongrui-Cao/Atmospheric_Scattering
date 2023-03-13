@@ -4,6 +4,7 @@
 #include "parallel.h"
 #include "path_tracing.h"
 #include "vol_path_tracing.h"
+#include "vol_path_rayleigh.h"
 #include "pcg.h"
 #include "progress_reporter.h"
 #include "scene.h"
@@ -121,6 +122,8 @@ Image3 vol_path_render(const Scene &scene) {
         f = vol_path_tracing_5;
     } else if (scene.options.vol_path_version == 6) {
         f = vol_path_tracing;
+    } else if (scene.options.vol_path_version == 100) {
+        f = vol_path_rayleigh;
     }
 
     ProgressReporter reporter(num_tiles_x * num_tiles_y);

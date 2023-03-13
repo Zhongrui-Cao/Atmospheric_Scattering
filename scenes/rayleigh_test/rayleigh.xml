@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- SCENE: 抬头看太阳 -->
+
+<scene version="0.5.0">
+	<integrator type="volpath">
+		<integer name="maxDepth" value="-1"/>
+		<integer name="version" value="100"/>
+	</integrator>
+
+	<!-- exteriror medium. AKA outer space-->
+	<medium type="homogeneous" id="medium1">
+		<rgb name="sigmaA" value="0 0 0"/>
+		<rgb name="sigmaS" value="0 0 0"/>
+		<float name="scale" value="1"/>
+
+		<!-- 		<phase type="hg">
+			<float name="g" value="0.5"/>
+		</phase> -->
+	</medium>
+
+	<!-- TODO the atmosphere of earth -->
+	<medium type="homogeneous" id="medium2">
+		<rgb name="sigmaA" value="0.01 0.01 0.01"/>
+		<rgb name="sigmaS" value="0.2 0.2 0.5"/>
+		<float name="scale" value="1"/>
+
+		<!-- 		<phase type="hg">
+			<float name="g" value="0.5"/>
+		</phase> -->
+	</medium>
+
+	<!-- atmosphere -->
+	<shape type="sphere">
+		<point name="center" x="0" y="0" z="0"/>
+		<float name="radius" value="1"/>
+
+		<ref name="interior" id="medium2"/>
+		<ref name="exterior" id="medium1"/>
+	</shape>
+
+	<!-- the sun -->
+	<shape type="sphere">
+		<!--<point name="center" x="0" y="0" z="23518"/>-->
+		<point name="center" x="0" y="0" z="23155"/>
+		<float name="radius" value="107"/>
+
+		<emitter type="area">
+			<rgb name="radiance" value="50000 50000 50000"/>
+		</emitter>
+
+		<ref name="exterior" id="medium1"/>
+
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.0 0.0 0.0"/>
+		</bsdf>
+	</shape>
+
+	<sensor type="perspective">
+		<string name="fovAxis" value="x"/>
+		<float name="fov" value="45"/>
+		<transform name="toWorld">
+			<lookAt target="0, 0, 23155" origin="0, 0, 0.9" up="0, 1, 0"/>
+		</transform>
+
+		<sampler type="independent">
+			<integer name="sampleCount" value="256"/>
+		</sampler>
+
+		<film type="hdrfilm" id="film">
+			<integer name="width" value="512"/>
+			<integer name="height" value="512"/>
+			<string name="pixelFormat" value="rgb"/>
+			<boolean name="banner" value="false"/>
+
+			<rfilter type="gaussian"/>
+		</film>
+
+		<!--Since eye inside of medium2, set it as medium id-->
+		<ref id="medium2"/>
+	</sensor>
+</scene>
