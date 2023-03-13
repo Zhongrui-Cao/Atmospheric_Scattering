@@ -21,13 +21,12 @@
 
 	<!-- TODO the atmosphere of earth -->
 	<medium type="homogeneous" id="medium2">
-		<rgb name="sigmaA" value="0.01 0.01 0.01"/>
-		<rgb name="sigmaS" value="0.2 0.2 0.5"/>
+		<rgb name="sigmaA" value="0.00 0.00 0.00"/>
+		<rgb name="sigmaS" value="0.00 0.00 0.00"/>
 		<float name="scale" value="1"/>
 
-		<!-- 		<phase type="hg">
-			<float name="g" value="0.5"/>
-		</phase> -->
+		<phase type="rayleigh">
+		</phase>
 	</medium>
 
 	<!-- atmosphere -->
@@ -42,7 +41,7 @@
 	<!-- the sun -->
 	<shape type="sphere">
 		<!--<point name="center" x="0" y="0" z="23518"/>-->
-		<point name="center" x="0" y="0" z="23155"/>
+		<point name="center" x="0" y="0" z="3155"/>
 		<float name="radius" value="107"/>
 
 		<emitter type="area">
@@ -60,7 +59,8 @@
 		<string name="fovAxis" value="x"/>
 		<float name="fov" value="45"/>
 		<transform name="toWorld">
-			<lookAt target="0, 0, 23155" origin="0, 0, 0.9" up="0, 1, 0"/>
+			<!--<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>-->
+			<lookAt target="0, 0, 23155" origin="0, 0, 0.2" up="0, 1, 0"/>
 		</transform>
 
 		<sampler type="independent">

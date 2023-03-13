@@ -68,6 +68,7 @@ void sphere_intersect_func(const RTCIntersectFunctionNArguments* args) {
         // No intersection
         return;
     }
+
     assert(t0 <= t1);
     Real t = -1;
     if (t0 >= ray.tnear && t0 < ray.tfar) {
