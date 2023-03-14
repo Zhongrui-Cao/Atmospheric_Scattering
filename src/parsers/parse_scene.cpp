@@ -742,6 +742,15 @@ std::tuple<std::string /* ID */, Medium> parse_medium(
         set_scale(density, scale);
         return std::make_tuple(id,
             HeterogeneousMedium{{phase_func}, albedo, density});
+    } else if (type == "atmosphere") {
+        for (auto child : node.children()) {
+            std::string name = child.attribute("name").value();
+            if (std::string(child.name()) == "phase") {
+                phase_func = parse_phase_function(child, default_map);
+            }
+        }
+        return std::make_tuple(id,
+            AtmosphereMedium{{phase_func}});
     } else {
         Error(std::string("Unknown medium type:") + type);
     }

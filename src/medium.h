@@ -19,7 +19,11 @@ struct HeterogeneousMedium : public MediumBase {
     VolumeSpectrum albedo, density;
 };
 
-using Medium = std::variant<HomogeneousMedium, HeterogeneousMedium>;
+struct AtmosphereMedium : public MediumBase {
+   
+};
+
+using Medium = std::variant<HomogeneousMedium, HeterogeneousMedium, AtmosphereMedium>;
 
 /// the maximum of sigma_t = sigma_s + sigma_a over the whole space
 Spectrum get_majorant(const Medium &medium, const Ray &ray);

@@ -124,9 +124,10 @@ Image3 vol_path_render(const Scene &scene) {
         f = vol_path_tracing;
     } else if (scene.options.vol_path_version == 100) {
         f = vol_path_rayleigh;
-    } else if (scene.options.vol_path_version == 105) {
-        f = vol_path_rayleigh_5;
-    }
+    } 
+    //else if (scene.options.vol_path_version == 105) {
+    //    f = vol_path_rayleigh_5;
+    //}
 
     ProgressReporter reporter(num_tiles_x * num_tiles_y);
     parallel_for([&](const Vector2i &tile) {

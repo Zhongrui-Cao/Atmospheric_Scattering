@@ -45,6 +45,7 @@ set(SRCS src/3rdparty/miniz.h
          src/materials/disney_bsdf.inl
          src/media/homogeneous.inl
          src/media/heterogeneous.inl
+         src/media/atmosphere.inl
          src/parsers/load_serialized.h
          src/parsers/parse_obj.h
          src/parsers/parse_ply.h

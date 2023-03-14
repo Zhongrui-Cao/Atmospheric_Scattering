@@ -3,6 +3,7 @@
 struct get_majorant_op {
     Spectrum operator()(const HomogeneousMedium &m);
     Spectrum operator()(const HeterogeneousMedium &m);
+    Spectrum operator()(const AtmosphereMedium &m);
 
     const Ray &ray;
 };
@@ -10,6 +11,7 @@ struct get_majorant_op {
 struct get_sigma_s_op {
     Spectrum operator()(const HomogeneousMedium &m);
     Spectrum operator()(const HeterogeneousMedium &m);
+    Spectrum operator()(const AtmosphereMedium &m);
 
     const Vector3 &p;
 };
@@ -17,12 +19,14 @@ struct get_sigma_s_op {
 struct get_sigma_a_op {
     Spectrum operator()(const HomogeneousMedium &m);
     Spectrum operator()(const HeterogeneousMedium &m);
+    Spectrum operator()(const AtmosphereMedium &m);
 
     const Vector3 &p;
 };
 
 #include "media/homogeneous.inl"
 #include "media/heterogeneous.inl"
+#include "media/atmosphere.inl"
 
 Spectrum get_majorant(const Medium &medium, const Ray &ray) {
     return std::visit(get_majorant_op{ray}, medium);
