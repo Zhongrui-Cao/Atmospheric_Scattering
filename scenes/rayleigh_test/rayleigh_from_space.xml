@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- SCENE: 抬头看太阳 -->
+<!-- SCENE: 太空看地球 -->
 
 <scene version="0.5.0">
 	<integrator type="volpath">
@@ -19,7 +19,7 @@
 		</phase> -->
 	</medium>
 
-	<!-- TODO the atmosphere of earth -->
+	<!-- the atmosphere of earth -->
 	<medium type="atmosphere" id="medium2">
 		<phase type="rayleigh">
 		</phase>
@@ -42,7 +42,7 @@
 		<ref name="exterior" id="medium2"/>
 
 		<bsdf type="diffuse">
-			<rgb name="reflectance" value="1.0 1.0 1.0"/>
+			<rgb name="reflectance" value="0.1 0.1 0.1"/>
 		</bsdf>
 	</shape>
 
@@ -53,7 +53,7 @@
 		<float name="radius" value="107"/>
 
 		<emitter type="area">
-			<rgb name="radiance" value="10000000 10000000 10000000"/>
+			<rgb name="radiance" value="100000 100000 100000"/>
 		</emitter>
 
 		<ref name="exterior" id="medium1"/>
@@ -68,7 +68,8 @@
 		<float name="fov" value="90"/>
 		<transform name="toWorld">
 			<!--<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>-->
-			<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>
+			<!-- 5 degree back of earth -->
+			<lookAt target="0, 0, 0" origin="0, 0, 2" up="0, 1, 0"/>
 		</transform>
 
 		<sampler type="independent">
@@ -84,7 +85,7 @@
 			<rfilter type="gaussian"/>
 		</film>
 
-		<!--Since eye inside of medium2, set it as medium id-->
-		<ref id="medium2"/>
+		<!--Since eye inside of medium1, set it as medium id-->
+		<ref id="medium1"/>
 	</sensor>
 </scene>

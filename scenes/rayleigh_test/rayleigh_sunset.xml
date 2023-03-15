@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- SCENE: 抬头看太阳 -->
+<!-- SCENE: 极地看日落 -->
 
 <scene version="0.5.0">
 	<integrator type="volpath">
 		<integer name="maxDepth" value="-1"/>
-		<integer name="version" value="100"/>
+		<integer name="version" value="105"/>
 	</integrator>
 
 	<!-- exteriror medium. AKA outer space-->
@@ -13,10 +13,6 @@
 		<rgb name="sigmaA" value="0 0 0"/>
 		<rgb name="sigmaS" value="0 0 0"/>
 		<float name="scale" value="1"/>
-
-		<!-- 		<phase type="hg">
-			<float name="g" value="0.5"/>
-		</phase> -->
 	</medium>
 
 	<!-- TODO the atmosphere of earth -->
@@ -42,7 +38,7 @@
 		<ref name="exterior" id="medium2"/>
 
 		<bsdf type="diffuse">
-			<rgb name="reflectance" value="1.0 1.0 1.0"/>
+			<rgb name="reflectance" value="0.1 0.1 0.1"/>
 		</bsdf>
 	</shape>
 
@@ -68,11 +64,28 @@
 		<float name="fov" value="90"/>
 		<transform name="toWorld">
 			<!--<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>-->
-			<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>
+			<!-- 5 degree back of earth -->
+			<!--<lookAt target="0, 0, 23155" origin="0, 0.98125177761, -0.08584840659" up="0, 1, 0"/>-->
+			<!-- 3 degree back of earth -->
+			<!--<lookAt target="0, 0, 23155" origin="0, 0.98365009173, -0.05155091689" up="0, 1, 0"/>-->
+			<!-- 1 degree back of earth -->
+			<!--<lookAt target="0, 0, 23155" origin="0, 0.98484997972, -0.01719062034" up="0, 1, 0"/>-->
+			<!-- top of earth -->
+			<!--<lookAt target="0, 0, 23155" origin="0, 0.98461, 0" up="0, 1, 0"/>-->
+
+			<!-- 3 degree front of earth -->
+			<!--<lookAt target="0, 0, 23155" origin="0, 0.98365009173, 0.05155091689" up="0, 1, 0"/>-->
+
+			<!-- 5 degree front of earth -->
+			<lookAt target="0, 0, 23155" origin="0, 0.98125177761, 0.08584840659" up="0, 1, 0"/>
+
+			<!-- 30 degree front of earth -->
+			<!-- <lookAt target="0, 0, 23155" origin="0, 0.85303502272, 0.4925" up="0, 1, 0"/>-->
+		
 		</transform>
 
 		<sampler type="independent">
-			<integer name="sampleCount" value="8192"/>
+			<integer name="sampleCount" value="1024"/>
 		</sampler>
 
 		<film type="hdrfilm" id="film">

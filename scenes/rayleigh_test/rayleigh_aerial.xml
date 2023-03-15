@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- SCENE: 抬头看太阳 -->
+<!-- SCENE: 空中看太阳 -->
 
 <scene version="0.5.0">
 	<integrator type="volpath">
@@ -42,7 +42,7 @@
 		<ref name="exterior" id="medium2"/>
 
 		<bsdf type="diffuse">
-			<rgb name="reflectance" value="1.0 1.0 1.0"/>
+			<rgb name="reflectance" value="0.1 0.1 0.1"/>
 		</bsdf>
 	</shape>
 
@@ -67,12 +67,11 @@
 		<string name="fovAxis" value="x"/>
 		<float name="fov" value="90"/>
 		<transform name="toWorld">
-			<!--<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>-->
-			<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>
+			<lookAt target="0, 0, 23155" origin="0, 0.986, 0" up="0, 1, 0"/>
 		</transform>
 
 		<sampler type="independent">
-			<integer name="sampleCount" value="8192"/>
+			<integer name="sampleCount" value="1024"/>
 		</sampler>
 
 		<film type="hdrfilm" id="film">
