@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- SCENE: 直视太阳 -->
+<!-- SCENE: 中午看地平线 -->
 
 <scene version="0.5.0">
 	<integrator type="volpath">
@@ -46,7 +46,7 @@
 	<!-- the sun -->
 	<shape type="sphere">
 		<!--<point name="center" x="0" y="0" z="23518"/>-->
-		<point name="center" x="0" y="0" z="150000000"/>
+		<point name="center" x="0" y="150000000" z="0"/>
 		<float name="radius" value="695700"/>
 
 		<emitter type="area">
@@ -73,7 +73,7 @@
 			<!-- 1 degree back of earth -->
 			<!--<lookAt target="0, 0, 23155" origin="0, 0.98484997972, -0.01719062034" up="0, 1, 0"/>-->
 			<!-- top of earth -->
-			<lookAt target="0, 0, 150000000" origin="0, 0, 6378.1" up="0, 1, 0"/>
+			<lookAt target="0, 0, 150000000" origin="0, 6378.1, 0" up="0, 1, 0"/>
 
 			<!-- 3 degree front of earth -->
 			<!--<lookAt target="0, 0, 23155" origin="0, 0.98365009173, 0.05155091689" up="0, 1, 0"/>-->

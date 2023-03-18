@@ -24,7 +24,8 @@
 	<!-- atmosphere -->
 	<shape type="sphere">
 		<point name="center" x="0" y="0" z="0"/>
-		<float name="radius" value="1"/>
+		<!-- 100km more than earth radius -->
+		<float name="radius" value="6478"/>
 
 		<ref name="interior" id="medium2"/>
 		<ref name="exterior" id="medium1"/>
@@ -33,23 +34,24 @@
 	<!-- the earth -->
 	<shape type="sphere">
 		<point name="center" x="0" y="0" z="0"/>
-		<float name="radius" value="0.9846"/>
+		<float name="radius" value="6378"/>
 
 		<ref name="exterior" id="medium2"/>
 
 		<bsdf type="diffuse">
-			<rgb name="reflectance" value="0.1 0.1 0.1"/>
+			<rgb name="reflectance" value="0.3 0.3 0.3"/>
 		</bsdf>
 	</shape>
 
 	<!-- the sun -->
 	<shape type="sphere">
 		<!--<point name="center" x="0" y="0" z="23518"/>-->
-		<point name="center" x="0" y="0" z="23155"/>
-		<float name="radius" value="107"/>
+		<point name="center" x="0" y="0" z="150000000"/>
+		<float name="radius" value="695700"/>
 
 		<emitter type="area">
-			<rgb name="radiance" value="10000000 10000000 10000000"/>
+			<!-- sun's radiance from "A Practical Analytic Model for Daylight" -->
+			<rgb name="radiance" value="210970 255030 267600"/>
 		</emitter>
 
 		<ref name="exterior" id="medium1"/>
@@ -71,7 +73,7 @@
 			<!-- 1 degree back of earth -->
 			<!--<lookAt target="0, 0, 23155" origin="0, 0.98484997972, -0.01719062034" up="0, 1, 0"/>-->
 			<!-- top of earth -->
-			<lookAt target="0, 0, 23155" origin="0, 0.98461, 0" up="0, 1, 0"/>
+			<!--<lookAt target="0, 0, 150000000" origin="0, 6378.1, 0" up="0, 1, 0"/>-->
 
 			<!-- 3 degree front of earth -->
 			<!--<lookAt target="0, 0, 23155" origin="0, 0.98365009173, 0.05155091689" up="0, 1, 0"/>-->
@@ -80,7 +82,7 @@
 			<!--<lookAt target="0, 0, 23155" origin="0, 0.98125177761, 0.08584840659" up="0, 1, 0"/>-->
 
 			<!-- 30 degree front of earth -->
-			<!-- lookAt target="0, 0, 23155" origin="0, 0.85303502272, 0.4925" up="0, 1, 0"/>-->
+			<lookAt target="0, 0, 150000000" origin="0, 5524, 3190" up="0, 1, 0"/>
 		
 		</transform>
 
