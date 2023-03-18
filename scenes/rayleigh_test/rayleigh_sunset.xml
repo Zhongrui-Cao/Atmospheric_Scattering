@@ -71,16 +71,16 @@
 			<!-- 1 degree back of earth -->
 			<!--<lookAt target="0, 0, 23155" origin="0, 0.98484997972, -0.01719062034" up="0, 1, 0"/>-->
 			<!-- top of earth -->
-			<!--<lookAt target="0, 0, 23155" origin="0, 0.98461, 0" up="0, 1, 0"/>-->
+			<lookAt target="0, 0, 23155" origin="0, 0.98461, 0" up="0, 1, 0"/>
 
 			<!-- 3 degree front of earth -->
 			<!--<lookAt target="0, 0, 23155" origin="0, 0.98365009173, 0.05155091689" up="0, 1, 0"/>-->
 
 			<!-- 5 degree front of earth -->
-			<lookAt target="0, 0, 23155" origin="0, 0.98125177761, 0.08584840659" up="0, 1, 0"/>
+			<!--<lookAt target="0, 0, 23155" origin="0, 0.98125177761, 0.08584840659" up="0, 1, 0"/>-->
 
 			<!-- 30 degree front of earth -->
-			<!-- <lookAt target="0, 0, 23155" origin="0, 0.85303502272, 0.4925" up="0, 1, 0"/>-->
+			<!-- lookAt target="0, 0, 23155" origin="0, 0.85303502272, 0.4925" up="0, 1, 0"/>-->
 		
 		</transform>
 

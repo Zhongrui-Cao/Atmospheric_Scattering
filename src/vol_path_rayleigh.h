@@ -73,7 +73,7 @@ Spectrum vol_path_rayleigh_5(const Scene &scene,
             Spectrum sigma_t = sigma_s + sigma_a;
 
             // Assume monochromatic medium
-            Real t = -log(1 - next_pcg32_real<Real>(rng)) / sigma_t[0];
+            Real t = -log(1 - next_pcg32_real<Real>(rng)) / sigma_t[2];
             if (t < max_t) {
                 scatter = true; // Tell the code to sample the phase function later
                 never_scatter = false;
@@ -84,7 +84,7 @@ Spectrum vol_path_rayleigh_5(const Scene &scene,
                 vertex.exterior_medium_id = current_medium_id;
 
                 transmittance = exp(-sigma_t * t);
-                trans_pdf = exp(-sigma_t[0] * t) * sigma_t[0];
+                trans_pdf = exp(-sigma_t[2] * t) * sigma_t[2];
             } else { // t >= max_t
                 if (!surface_vertex) {
                     // do we need this?
@@ -93,7 +93,7 @@ Spectrum vol_path_rayleigh_5(const Scene &scene,
                     vertex.exterior_medium_id = current_medium_id;
                 }
                 transmittance = exp(-sigma_t * max_t);
-                trans_pdf = exp(-sigma_t[0] * max_t);
+                trans_pdf = exp(-sigma_t[2] * max_t);
             }
         }
         // Update multiple bounces transmittion pdf.
@@ -204,7 +204,7 @@ Spectrum vol_path_rayleigh_5(const Scene &scene,
                     Spectrum sigma_s = get_sigma_s(medium, ray.org);
                     Spectrum sigma_t = sigma_s + sigma_a;
                     T_light *= exp(-sigma_t * next_t);
-                    p_trans_dir *= exp(-sigma_t[0] * next_t);
+                    p_trans_dir *= exp(-sigma_t[2] * next_t);
                 }
 
                 if (!shadow_vertex) {
