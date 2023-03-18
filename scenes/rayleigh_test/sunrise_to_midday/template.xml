@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- SCENE: 极地看日落 -->
-
 <scene version="0.5.0">
 	<integrator type="volpath">
 		<integer name="maxDepth" value="-1"/>
@@ -15,7 +13,7 @@
 		<float name="scale" value="1"/>
 	</medium>
 
-	<!-- TODO the atmosphere of earth -->
+	<!-- the atmosphere of earth -->
 	<medium type="atmosphere" id="medium2">
 		<phase type="rayleigh">
 		</phase>
@@ -46,7 +44,7 @@
 
 	<!-- the sun -->
 	<shape type="sphere">
-		<point name="center" x="0" y="0" z="150000000"/>
+		<point name="center" x="106066017.177982" y="106066017.177982" z="0"/>
 		<float name="radius" value="695700"/>
 
 		<emitter type="area">
@@ -66,39 +64,7 @@
 		<float name="fov" value="90"/>
 		<transform name="toWorld">
 
-			<!-- 5 degree back of earth -->
-			<!--<lookAt target="0, 0, 150000000" origin="0, 0.98125177761, -0.08584840659" up="0, 1, 0"/>-->
-			
-			<!-- 3 degree back of earth -->
-			<!--<lookAt target="0, 0, 150000000" origin="0, 0.98365009173, -0.05155091689" up="0, 1, 0"/>-->
-			
-			<!-- top of earth -->
-			<!--<lookAt target="0, 0, 150000000" origin="0, 6378.1, 0" up="0, 1, 0"/>-->
-
-			<!-- 3 degree front of earth -->
-			<!--<lookAt target="0, 0, 150000000" origin="0, 6369.26, 333.80" up="0, 1, 0"/>-->
-
-			<!-- 5 degree front of earth -->
-			<!-- <lookAt target="0, 0, 150000000" origin="0, 6353.73, 555.88" up="0, 1, 0"/> -->
-			<!-- <lookAt target="0, 0, -150000000" origin="0, 6353.73, 555.88" up="0, 1, 0"/> -->
-
-			<!-- 10 degree front of earth -->
-			<!-- <lookAt target="0, 0, 150000000" origin="0, 6281.11, 1107.53" up="0, 1, 0"/> -->
-
-			<!-- 30 degree front of earth -->
-			<!-- <lookAt target="0, 0, 150000000" origin="0, 5524, 3190" up="0, 1, 0"/> -->
-
-			<!-- 45 degree front of earth -->
-			<!-- <lookAt target="0, 0, 150000000" origin="0, 4510, 4510" up="0, 1, 0"/> -->
-
-			<!-- 60 degree front of earth, looking up -->
-			<!-- <lookAt target="0, 6378.2, 11047.04 " origin="0, 3189.1, 5523.52" up="0, 1, 0"/> -->
-
-			<!-- 90 degree front of earth, looking up -->
-			<!-- <lookAt target="0, 0, 150000000" origin="0, 0, 6378.1" up="0, 1, 0"/> -->
-
-			<!-- 90 degree front of earth, looking at horizon -->
-			<!-- <lookAt target="0, -6378.1, 6380" origin="0, 0, 6378.1" up="0, 1, 0"/> -->
+		<lookAt target="6378.1, 13000, 0" origin="0, 6378.1, 0" up="0, 1, 0"/>
 
 		</transform>
 
@@ -108,7 +74,7 @@
 
 		<film type="hdrfilm" id="film">
 			<integer name="width" value="512"/>
-			<integer name="height" value="1024"/>
+			<integer name="height" value="768"/>
 			<string name="pixelFormat" value="rgb"/>
 			<boolean name="banner" value="false"/>
 
