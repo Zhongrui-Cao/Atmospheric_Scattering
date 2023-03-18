@@ -24,8 +24,8 @@
 	<!-- atmosphere -->
 	<shape type="sphere">
 		<point name="center" x="0" y="0" z="0"/>
-		<!-- 100km more than earth radius -->
-		<float name="radius" value="6478"/>
+		<!-- 60km more than earth radius -->
+		<float name="radius" value="6438"/>
 
 		<ref name="interior" id="medium2"/>
 		<ref name="exterior" id="medium1"/>
@@ -39,13 +39,13 @@
 		<ref name="exterior" id="medium2"/>
 
 		<bsdf type="diffuse">
-			<rgb name="reflectance" value="0.3 0.3 0.3"/>
+			<!-- from paper "The albedo of Earth" -->
+			<rgb name="reflectance" value="0.25 0.25 0.35"/>
 		</bsdf>
 	</shape>
 
 	<!-- the sun -->
 	<shape type="sphere">
-		<!--<point name="center" x="0" y="0" z="23518"/>-->
 		<point name="center" x="0" y="0" z="150000000"/>
 		<float name="radius" value="695700"/>
 
@@ -63,27 +63,43 @@
 
 	<sensor type="perspective">
 		<string name="fovAxis" value="x"/>
-		<float name="fov" value="90"/>
+		<float name="fov" value="45"/>
 		<transform name="toWorld">
-			<!--<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>-->
+
 			<!-- 5 degree back of earth -->
-			<!--<lookAt target="0, 0, 23155" origin="0, 0.98125177761, -0.08584840659" up="0, 1, 0"/>-->
+			<!--<lookAt target="0, 0, 150000000" origin="0, 0.98125177761, -0.08584840659" up="0, 1, 0"/>-->
+			
 			<!-- 3 degree back of earth -->
-			<!--<lookAt target="0, 0, 23155" origin="0, 0.98365009173, -0.05155091689" up="0, 1, 0"/>-->
-			<!-- 1 degree back of earth -->
-			<!--<lookAt target="0, 0, 23155" origin="0, 0.98484997972, -0.01719062034" up="0, 1, 0"/>-->
+			<!--<lookAt target="0, 0, 150000000" origin="0, 0.98365009173, -0.05155091689" up="0, 1, 0"/>-->
+			
 			<!-- top of earth -->
 			<!--<lookAt target="0, 0, 150000000" origin="0, 6378.1, 0" up="0, 1, 0"/>-->
 
 			<!-- 3 degree front of earth -->
-			<!--<lookAt target="0, 0, 23155" origin="0, 0.98365009173, 0.05155091689" up="0, 1, 0"/>-->
+			<!--<lookAt target="0, 0, 150000000" origin="0, 6369.26, 333.80" up="0, 1, 0"/>-->
 
 			<!-- 5 degree front of earth -->
-			<!--<lookAt target="0, 0, 23155" origin="0, 0.98125177761, 0.08584840659" up="0, 1, 0"/>-->
+			<!-- <lookAt target="0, 0, 150000000" origin="0, 6353.73, 555.88" up="0, 1, 0"/> -->
+			<!-- <lookAt target="0, 0, -150000000" origin="0, 6353.73, 555.88" up="0, 1, 0"/> -->
+
+			<!-- 10 degree front of earth -->
+			<!-- <lookAt target="0, 0, 150000000" origin="0, 6281.11, 1107.53" up="0, 1, 0"/> -->
 
 			<!-- 30 degree front of earth -->
-			<lookAt target="0, 0, 150000000" origin="0, 5524, 3190" up="0, 1, 0"/>
-		
+			<!-- <lookAt target="0, 0, 150000000" origin="0, 5524, 3190" up="0, 1, 0"/> -->
+
+			<!-- 60 degree front of earth -->
+			<!-- <lookAt target="0, 0, 150000000" origin="0, 3189.1, 5523.52" up="0, 1, 0"/> -->
+
+			<!-- 60 degree front of earth, looking up -->
+			<!-- <lookAt target="0, 6378.2, 11047.04 " origin="0, 3189.1, 5523.52" up="0, 1, 0"/> -->
+
+			<!-- 90 degree front of earth, looking up -->
+			<!-- <lookAt target="0, 0, 150000000" origin="0, 0, 6378.1" up="0, 1, 0"/> -->
+
+			<!-- 90 degree front of earth, looking at horizon -->
+			 <lookAt target="0, -6378.1, 6380" origin="0, 0, 6378.1" up="0, 1, 0"/> 
+
 		</transform>
 
 		<sampler type="independent">

@@ -39,7 +39,7 @@
 		<ref name="exterior" id="medium2"/>
 
 		<bsdf type="diffuse">
-			<rgb name="reflectance" value="0.3 0.3 0.3"/>
+			<rgb name="reflectance" value="0.25 0.25 0.32"/>
 		</bsdf>
 	</shape>
 
@@ -63,7 +63,7 @@
 
 	<sensor type="perspective">
 		<string name="fovAxis" value="x"/>
-		<float name="fov" value="90"/>
+		<float name="fov" value="179"/>
 		<transform name="toWorld">
 			<!--<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>-->
 			<!-- 5 degree back of earth -->
