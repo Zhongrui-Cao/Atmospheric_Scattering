@@ -1,14 +1,12 @@
 #pragma once
 
-/*
-const Real beta_r = 0.00519673173; //for 680nm 
-const Real beta_g = 0.01214269792; //for 550nm
-const Real beta_b = 0.02964525861; //for 440nm
+const Real r_weight = 0.11060479323; //for 680nm 
+const Real g_weight = 0.25843946974; //for 550nm
+const Real b_weight = 0.63095573702; //for 440nm
 
 inline Real weighted_average(const Vector3 &v) {
-    return (v.x + v.y + v.z) / 3;
+    return (v.x * r_weight + v.y * g_weight + v.z * b_weight);
 }
-*/
 
 inline int update_medium_id_rayleigh(const PathVertex &vertex,
                             const Ray &ray,
@@ -82,11 +80,21 @@ Spectrum vol_path_rayleigh_5(const Scene &scene,
             Spectrum sigma_s = get_sigma_s(medium, ray.org);
             Spectrum sigma_t = sigma_s + sigma_a;
 
-            // Sample a channel for sampling
+            // Importance Sample a channel for sampling
             Real u = next_pcg32_real<Real>(rng);
             int channel = std::clamp(int(u * Real(3)), 0, 2);
-
-
+            
+            /*
+            int channel = 0;
+            if (u < r_weight) {
+                channel = 0;
+            } else if (u < r_weight + b_weight) {
+                channel = 1;
+            } else {
+                channel = 2;
+            }
+            */
+            
             // do not Assume monochromatic medium
             Real t = -log(1 - next_pcg32_real<Real>(rng)) / sigma_t[channel];
             if (t < max_t) {
