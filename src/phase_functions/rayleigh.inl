@@ -11,8 +11,8 @@ Spectrum eval_op::operator()(const Rayleigh&) const {
     // mie
     // The asymetry parameter for the Cornette-Shanks phase function for the aerosols.
     Real g = 0.76;
-    Real top = (Real(1) - g*g) * (1 + mu*mu);
-    Real bottom = (2 + g*g) * pow(1+g*g-2*g*mu, 3/2);
+    Real top = (1.0 - g*g) * (1.0 + mu*mu);
+    Real bottom = (2.0 + g*g) * sqrt(pow(1.0+g*g-2.0*g*mu, 3.0));
     Spectrum mie = make_const_spectrum(c_INVFOURPI * 1.5 * top / bottom);
 
     Spectrum blend = 0.5 * rayleigh + 0.5 * mie;
