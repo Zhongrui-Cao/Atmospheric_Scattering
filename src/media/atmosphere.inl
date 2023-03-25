@@ -19,9 +19,9 @@ Spectrum get_sigma_s_op::operator()(const AtmosphereMedium &m) {
     Real my_beta_b = 0.02964525861; //for 440nm
 
     // betas from "Efficient Rendering of Atmospheric Phenomena"
-    Real beta_r = 0.0058; //for 680nm 
-    Real beta_g = 0.0135; //for 550nm
-    Real beta_b = 0.0331; //for 440nm
+    //Real beta_r = 0.0058; //for 680nm 
+    //Real beta_g = 0.0135; //for 550nm
+    //Real beta_b = 0.0331; //for 440nm
 
                   
     // Get height of curr ray
@@ -51,12 +51,12 @@ Spectrum get_sigma_s_op::operator()(const AtmosphereMedium &m) {
     Real sigma_g = my_beta_g * roh;
     Real sigma_b = my_beta_b * roh;
 
-    Real sigma_r_paper = beta_r * roh_paper;
-    Real sigma_g_paper = beta_g * roh_paper;
-    Real sigma_b_paper = beta_b * roh_paper;
+    //Real sigma_r_paper = beta_r * roh_paper;
+    //Real sigma_g_paper = beta_g * roh_paper;
+    //Real sigma_b_paper = beta_b * roh_paper;
 
     Spectrum rayleigh_sigma = Spectrum{ sigma_r, sigma_g, sigma_b };
-    Spectrum rayleigh_sigma_paper = Spectrum{ sigma_r_paper, sigma_g_paper, sigma_b_paper };
+    //Spectrum rayleigh_sigma_paper = Spectrum{ sigma_r_paper, sigma_g_paper, sigma_b_paper };
 
 
     ////////////////////////////Mie starts here//////////////////////////////////////////
@@ -73,8 +73,8 @@ Spectrum get_sigma_s_op::operator()(const AtmosphereMedium &m) {
     Real sigma_s_mie = beta_sealevel * roh_mie;
     Spectrum mie_sigma = make_const_spectrum(sigma_s_mie);
 
-    Spectrum blend = 0.5 * rayleigh_sigma + 0.5 * mie_sigma;
-    Spectrum blend_paper = 0.5 * rayleigh_sigma_paper + 0.5 * mie_sigma;
+    //Spectrum blend = rayleigh_sigma + mie_sigma;
+    //Spectrum blend_paper = rayleigh_sigma_paper + mie_sigma;
 
     return rayleigh_sigma + mie_sigma;
 }
