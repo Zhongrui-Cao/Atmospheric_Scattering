@@ -3,7 +3,7 @@
 //TODO change file name
 
 Spectrum eval_op::operator()(const Rayleigh&) const {
-    Real mu = dot(dir_in, dir_out);
+    Real mu = -dot(dir_in, dir_out);
 
     // rayleigh
     Spectrum rayleigh = make_const_spectrum(c_INVFOURPI * 0.75 * (Real(1) + mu * mu));
