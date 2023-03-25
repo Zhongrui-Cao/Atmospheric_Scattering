@@ -265,7 +265,8 @@ Spectrum vol_path_tracing_3(const Scene &scene,
             std::optional<Vector3> phase_sample =
                 sample_phase_function(phase_function,
                                       dir_view,
-                                      phase_rnd_param_uv);
+                                      phase_rnd_param_uv, 
+                                      next_pcg32_real<Real>(rng));
             if (!phase_sample) {
                 // Phase function sampling failed. Abort the loop.
                 break;
@@ -580,7 +581,8 @@ Spectrum vol_path_tracing_4(const Scene &scene,
             std::optional<Vector3> phase_sample =
                 sample_phase_function(phase_function,
                                       dir_view,
-                                      phase_rnd_param_uv);
+                                      phase_rnd_param_uv, 
+                                      next_pcg32_real<Real>(rng));
             if (!phase_sample) {
                 // Phase function sampling failed. Abort the loop.
                 break;
@@ -899,7 +901,8 @@ Spectrum vol_path_tracing_5(const Scene &scene,
             std::optional<Vector3> phase_sample =
                 sample_phase_function(phase_function,
                                       dir_view,
-                                      phase_rnd_param_uv);
+                                      phase_rnd_param_uv, 
+                                      next_pcg32_real<Real>(rng));
             if (!phase_sample) {
                 // Phase function sampling failed. Abort the loop.
                 break;
@@ -1329,7 +1332,8 @@ Spectrum vol_path_tracing(const Scene &scene,
             std::optional<Vector3> phase_sample =
                 sample_phase_function(phase_function,
                                       dir_view,
-                                      phase_rnd_param_uv);
+                                      phase_rnd_param_uv, 
+                                      next_pcg32_real<Real>(rng));
             if (!phase_sample) {
                 // Phase function sampling failed. Abort the loop.
                 break;

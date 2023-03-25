@@ -23,17 +23,46 @@ Spectrum eval_op::operator()(const Rayleigh&) const {
 std::optional<Vector3> sample_phase_function_op::operator()(const Rayleigh&) const {
     // TODO
     // https://backend.orbit.dtu.dk/ws/portalfiles/portal/6314521/3D9A1d01.pdf
-
+    
     // Uniform sphere sampling
     Real z = 1 - 2 * rnd_param.x;
     Real r = sqrt(fmax(Real(0), 1 - z * z));
     Real phi = 2 * c_PI * rnd_param.y;
-    return Vector3{ r * cos(phi), r * sin(phi), z };
+    Vector3 rayleigh_sample = Vector3{ r * cos(phi), r * sin(phi), z };
+    
+    // HG sampling, since very similar
+    // https://www.shadertoy.com/view/wlGBzh
+    Real g = 0.76;
+    Real tmp = (g * g - 1) / (2 * rnd_param.x * g - (g + 1));
+    Real cos_elevation = (tmp * tmp - (1 + g * g)) / (2 * g);
+    Real sin_elevation = sqrt(max(1 - cos_elevation * cos_elevation, Real(0)));
+    Real azimuth = 2 * c_PI * rnd_param.y;
+    Frame frame(dir_in);
+    Vector3 HG_sample = to_world(frame,
+        Vector3{sin_elevation * cos(azimuth),
+                sin_elevation * sin(azimuth),
+                cos_elevation});
+
+    if (rnd_num > 0.5) {
+        return rayleigh_sample;
+    } else {
+        return HG_sample;
+    }
+
+    //return HG_sample;
 }
 
 Real pdf_sample_phase_op::operator()(const Rayleigh&) const {
     // TODO
     // https://backend.orbit.dtu.dk/ws/portalfiles/portal/6314521/3D9A1d01.pdf
 
-    return c_INVFOURPI;
+    Real rayleigh_pdf = c_INVFOURPI;
+
+    Real g = 0.76;
+    Real HG_pdf = c_INVFOURPI *
+        (1 - g * g) / 
+            (pow((1 + g * g + 2 * g * dot(dir_in, dir_out)), Real(3)/Real(2)));
+
+    return 0.5 * HG_pdf + 0.5 * rayleigh_pdf;
+    //return HG_pdf;
 }

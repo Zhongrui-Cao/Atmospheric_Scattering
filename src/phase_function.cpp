@@ -16,6 +16,7 @@ struct sample_phase_function_op {
 
     const Vector3 &dir_in;
     const Vector2 &rnd_param;
+    const Real    rnd_num;
 };
 
 struct pdf_sample_phase_op {
@@ -40,8 +41,9 @@ Spectrum eval(const PhaseFunction &phase_function,
 std::optional<Vector3> sample_phase_function(
         const PhaseFunction &phase_function,
         const Vector3 &dir_in,
-        const Vector2 &rnd_param) {
-    return std::visit(sample_phase_function_op{dir_in, rnd_param}, phase_function);
+        const Vector2 &rnd_param, 
+        const Real    rnd_num) {
+    return std::visit(sample_phase_function_op{dir_in, rnd_param, rnd_num}, phase_function);
 }
 
 Real pdf_sample_phase(const PhaseFunction &phase_function,
