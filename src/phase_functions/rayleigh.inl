@@ -48,8 +48,6 @@ std::optional<Vector3> sample_phase_function_op::operator()(const Rayleigh&) con
     } else {
         return HG_sample;
     }
-
-    //return HG_sample;
 }
 
 Real pdf_sample_phase_op::operator()(const Rayleigh&) const {
