@@ -47,12 +47,21 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   
 ## Phase functions and Implementation
 
-  ### Rayleigh 
+  ### Rayleigh  
   Lets say we have a $\theta$ that denotes the angle between the incomming ray and the direction of light. We need to have a phase function $P$ in order to 
-  figure out the light intensity being scattered out.  
+  figure out the light intensity being scattered out. P is given as:  
   
   $$ P(\theta) = 3/4 * (1+cos^2(\theta))$$
   
+  We also need to know the scattering coefficient $\sigma_s$ of Rayleigh. It is given by:  
+  
+  $$ \sigma_s = \frac{8\pi^3(n^2-1)^2}{3N\lambda^4} * \rho(h) $$
+  
+  Where:  
+  $n = 1.00029$ is the index of refraction of air.  
+  $N = 2.504 * 10^25$ is the molecular number density of air.  
+  $\lambda$ is the wavelength of light.  
+  $\rho(h)$ is the density function, given before, as $e^{-h/H}$.
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
