@@ -125,6 +125,10 @@ You can take a look at them on youtube:
 Time lapse: https://youtube.com/shorts/O2V1U5Pif4w  
 Rayleigh only Time lapse: https://youtube.com/shorts/AC7zdxW4wqI  
 From earth to space: https://youtube.com/shorts/Dkp57a4YYzA  
+
+  Time lapse             |  Rayleigh only  |  earth to space
+:-------------------------:|:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)  |  ![](https://user-images.githubusercontent.com/49463679/227764996-2a32c9aa-9d1e-4aef-bde9-9377da6e40e9.gif) | ![](https://user-images.githubusercontent.com/49463679/227765061-231f477b-30c0-4380-b358-a29d72108324.gif) 
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
