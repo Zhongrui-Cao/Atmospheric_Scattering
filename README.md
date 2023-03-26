@@ -1,5 +1,6 @@
 # Rendering Atmospheric Scattering with Volumetric Path Tracing
 CSE272 WI23 Final project, Leo Cao
+Under construction
 
 ![ezgif-3-a13a1bbbd6](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)
 
@@ -62,6 +63,8 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   $N = 2.504 * 10^25$ is the molecular number density of air.  
   $\lambda$ is the wavelength of light.  
   $\rho(h)$ is the density function, given before, as $e^{-h/H}$.
+  
+  
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
