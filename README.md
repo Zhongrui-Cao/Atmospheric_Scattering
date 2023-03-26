@@ -46,7 +46,7 @@ My method works for both inside the earth and outside in space, since I did not 
   The thickness of the atmosphere is usually defined by the Kármán line at $100km$.
   However, since most of the scattering happens in the troposphere and the stratosphere, 
   modeling the atmosphere with a thickness of $60km$ was shown to have better fitting to the measurement data. Denoted in "_Precomputed Atmospheric Scattering_" 
-  by Bruneton et al.[6] 
+  by Bruneton et al.[6] Therefore, our atmosphere will be a sphere of gas with radius $6438km$, centered around the earth. 
   
 ## Phase functions and Implementation
 
