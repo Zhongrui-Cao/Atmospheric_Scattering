@@ -147,6 +147,13 @@ This is caused by the backscatter of sunlight. The darker part at the bottom of 
   Sunset aerial            |  earth from space
 :-------------------------:|:-------------------------:
 ![](https://user-images.githubusercontent.com/49463679/227765708-9fae6414-c040-4dc7-92a8-2b626b7d9ba4.PNG)  |  ![](https://user-images.githubusercontent.com/49463679/227765772-17c584e1-0040-405a-875d-50fc35df175b.PNG)
+
+## Limitations and Future work
+
+* This implementation does not consider spectral aspect of rayleigh and the sun. One future improvement might be implementing spectral rendering for ultimate accuracy.
+* Adding texture and height map of the earth
+* Improve the efficiency of volume rendering code
+* Change the parameters to simulate alien skys and sunsets
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
