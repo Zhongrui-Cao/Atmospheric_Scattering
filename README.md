@@ -75,7 +75,7 @@ My method works for both inside the earth and outside in space, since I did not 
   I am using:  
   $\sigma_s(\lambda=680nm) = 0.00519673173$ for red,  
   $\sigma_s(\lambda=550nm) = 0.01214269792$ for green,  
-  $\sigma_s(\lambda=440nm) = 0.02964525861$ for blue. (all terms calculated in km)  
+  $\sigma_s(\lambda=440nm) = 0.02964525861$ for blue. (all terms calculated in km to avoid floating point issues)  
   
   ### Mie  
   Mie scattering is responsible for the water vapor, causing white glories around the sun.  
