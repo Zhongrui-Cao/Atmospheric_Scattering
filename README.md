@@ -129,6 +129,17 @@ From earth to space: https://youtube.com/shorts/Dkp57a4YYzA
   Time lapse             |  Rayleigh only  |  earth to space
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)  |  ![](https://user-images.githubusercontent.com/49463679/227764996-2a32c9aa-9d1e-4aef-bde9-9377da6e40e9.gif) | ![](https://user-images.githubusercontent.com/49463679/227765061-231f477b-30c0-4380-b358-a29d72108324.gif) 
+
+## Other results
+
+### Belt of Venus
+This effect of Venus Belt is observable after sunset. It is a pink and red belt, and it is located at the opposite side of the setting sun.  
+This is caused by the backscatter of sunlight. The darker part at the bottom of the belt is caused by Earth's shadow.  
+
+  Rendering            |  reference photo
+:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/49463679/227765542-604e8615-d210-4d3a-9037-ddb202025ee5.PNG)  |  ![](https://user-images.githubusercontent.com/49463679/227765631-53f16088-3d6b-4da4-b6d2-f38f8ea37782.PNG)
+
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
