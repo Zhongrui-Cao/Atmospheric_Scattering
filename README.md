@@ -12,7 +12,8 @@ to render realistic atmospheric effects.
 
 I used physically based models and parameters for the earth, 
 the sun, and the atmosphere. My implementation also accounts for multiple scattering and global illumination, which is important 
-for physical rendering of sunset, sunrise, and the shadow of the Earth inside the atmosphere (the Belt of Venus effect).
+for physical rendering of sunset, sunrise, and the shadow of the Earth inside the atmosphere (the Belt of Venus effect).  
+My method works for both inside the earth and outside in space, since I did not use an analytical model.   
 
 ## Physical Model and Parameters
 
