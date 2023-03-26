@@ -120,6 +120,8 @@ And there pdfs would just be $0.5 * HG_{pdf} + 0.5 * rayleigh_{pdf}$
 ## Animation generation
 
 To generate animation, I wrote a python script to read in and modify the xml data, then output hundreds of scene files.  
+I also used the python script to render the scene files one by one to produce .exr images.  
+In the end, I used DaVinci Resolve 8 to put the image sequence together to form a video. I used the built in Loop Up Tables to tone map the exr image. The LUT I used is "Linear to DMI".  
 I rendered the transition from sunrise to sunset and also sealevel to space.
 You can take a look at them on youtube:   
 Time lapse: https://youtube.com/shorts/O2V1U5Pif4w  
@@ -140,6 +142,11 @@ This is caused by the backscatter of sunlight. The darker part at the bottom of 
 :-------------------------:|:-------------------------:
 ![](https://user-images.githubusercontent.com/49463679/227765542-604e8615-d210-4d3a-9037-ddb202025ee5.PNG)  |  ![](https://user-images.githubusercontent.com/49463679/227765631-53f16088-3d6b-4da4-b6d2-f38f8ea37782.PNG)
 
+### Aerial view
+
+  Sunset aerial            |  earth from space
+:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/49463679/227765708-9fae6414-c040-4dc7-92a8-2b626b7d9ba4.PNG)  |  ![](https://user-images.githubusercontent.com/49463679/227765772-17c584e1-0040-405a-875d-50fc35df175b.PNG)
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
