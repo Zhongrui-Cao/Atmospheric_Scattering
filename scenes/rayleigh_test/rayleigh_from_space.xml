@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- SCENE: 太空看地球 -->
-
 <scene version="0.5.0">
 	<integrator type="volpath">
 		<integer name="maxDepth" value="-1"/>
-		<integer name="version" value="100"/>
+		<integer name="version" value="105"/>
 	</integrator>
 
 	<!-- exteriror medium. AKA outer space-->
@@ -13,10 +11,6 @@
 		<rgb name="sigmaA" value="0 0 0"/>
 		<rgb name="sigmaS" value="0 0 0"/>
 		<float name="scale" value="1"/>
-
-		<!-- 		<phase type="hg">
-			<float name="g" value="0.5"/>
-		</phase> -->
 	</medium>
 
 	<!-- the atmosphere of earth -->
@@ -28,7 +22,8 @@
 	<!-- atmosphere -->
 	<shape type="sphere">
 		<point name="center" x="0" y="0" z="0"/>
-		<float name="radius" value="1"/>
+		<!-- 60km more than earth radius -->
+		<float name="radius" value="6438"/>
 
 		<ref name="interior" id="medium2"/>
 		<ref name="exterior" id="medium1"/>
@@ -37,23 +32,24 @@
 	<!-- the earth -->
 	<shape type="sphere">
 		<point name="center" x="0" y="0" z="0"/>
-		<float name="radius" value="0.9846"/>
+		<float name="radius" value="6378"/>
 
 		<ref name="exterior" id="medium2"/>
 
 		<bsdf type="diffuse">
-			<rgb name="reflectance" value="0.1 0.1 0.1"/>
+			<!-- from paper "The albedo of Earth" -->
+			<rgb name="reflectance" value="0.25 0.25 0.35"/>
 		</bsdf>
 	</shape>
 
 	<!-- the sun -->
 	<shape type="sphere">
-		<!--<point name="center" x="0" y="0" z="23518"/>-->
-		<point name="center" x="0" y="0" z="23155"/>
-		<float name="radius" value="107"/>
+		<point name="center" x="150000000" y="0" z="0"/>
+		<float name="radius" value="695700"/>
 
 		<emitter type="area">
-			<rgb name="radiance" value="100000 100000 100000"/>
+			<!-- sun's radiance from "A Practical Analytic Model for Daylight" -->
+			<rgb name="radiance" value="210970 255030 267600"/>
 		</emitter>
 
 		<ref name="exterior" id="medium1"/>
@@ -65,15 +61,15 @@
 
 	<sensor type="perspective">
 		<string name="fovAxis" value="x"/>
-		<float name="fov" value="90"/>
+		<float name="fov" value="45"/>
 		<transform name="toWorld">
-			<!--<lookAt target="0, 0, 23155" origin="0, 0, 0.985" up="0, 1, 0"/>-->
-			<!-- 5 degree back of earth -->
-			<lookAt target="0, 0, 0" origin="0, 0, 2" up="0, 1, 0"/>
+
+			<lookAt target="0, 6378, 0" origin="7000, 3219, 1" up="0, 1, 0"/>
+
 		</transform>
 
 		<sampler type="independent">
-			<integer name="sampleCount" value="8192"/>
+			<integer name="sampleCount" value="32768"/>
 		</sampler>
 
 		<film type="hdrfilm" id="film">
