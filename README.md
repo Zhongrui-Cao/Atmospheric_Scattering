@@ -51,6 +51,8 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   Lets say we have a $\theta$ that denotes the angle between the incomming ray and the direction of light. We need to have a phase function $P$ in order to 
   figure out the light intensity being scattered out.  
   
+  $$ P(\theta) = 3/4 * (1+cos^2(\theta))$$
+  
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
