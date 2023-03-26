@@ -1,6 +1,5 @@
 # Rendering Atmospheric Scattering with Volumetric Path Tracing
 CSE272 WI23 Final project, Leo Cao  
-Under construction please don't grade yet   
 
 time lapse             |  space view 
 :-------------------------:|:-------------------------:
