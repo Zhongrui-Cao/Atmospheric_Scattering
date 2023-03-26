@@ -2,10 +2,9 @@
 CSE272 WI23 Final project, Leo Cao  
 Under construction please don't grade yet   
 
-time lapse             |  space view
+time lapse             |  space view 
 :-------------------------:|:-------------------------:
 ![](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)  |  ![](https://user-images.githubusercontent.com/49463679/227762243-1682d287-607f-4b49-89ec-0cac15f96da3.PNG)
-
 
 ## Introduction
 
@@ -50,6 +49,10 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   by Bruneton et al.[6] 
   
 ## Phase functions and Implementation
+
+  Rayleigh only             |  Rayleigh + Mie  |  Rayleigh only |  Rayleigh + Mie
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/49463679/227763877-1095ff31-8c08-48d6-8fb6-756c0518ffc8.PNG)  |  ![](https://user-images.githubusercontent.com/49463679/227763882-852b8686-d1db-448f-8ab3-a81566d6dce1.PNG) | ![rayleigh_90](https://user-images.githubusercontent.com/49463679/227764056-2f16b976-0aac-48e6-bcf6-7d7259cd741d.PNG) | ![r_m_90](https://user-images.githubusercontent.com/49463679/227764061-8614fd1b-0a21-4396-a785-8796f73959e7.PNG)
 
   ### Rayleigh  
   Lets say we have a $\theta$ that denotes the angle between the incomming ray and the direction of light. We need to have a phase function $P$ in order to 
@@ -103,14 +106,25 @@ $$ cos(\theta) = u - 1/u$$
 $$ azimuth = 2\pi\xi_2 $$  
 
 ### Cornette-Shanks
-Sampling methods for the Cornette-Shanks phase function is a little hard to find, but its very close to the HG phase function 
-implemented in Lajolla, therefore I used the HG sampling method to approximate, which gave a pretty good result when testing.  
+Sampling methods for the Cornette-Shanks phase function is a little hard to find, but its very close to the HG phase function when $g = 0.72$, 
+therefore I used the HG importance sampling method to approximate, which gave a pretty good result when testing. Reference is this paper[8] and Lajolla :)  
+
+$$  cos(\theta) = \frac{1}{2g} (1+g^2-(\frac{1-g^2}{1-g+2g\xi_1})^2) $$  
+
+$$ azimuth = 2\pi\xi_2 $$  
 
 ### Together
 Since I assume the atmosphere is a even mixure of air molecules and water vapor, we can sample Rayleigh 50% of the time, and HG 50% of the time.  
 And there pdfs would just be $0.5 * HG_{pdf} + 0.5 * rayleigh_{pdf}$
 
+## Animation generation
 
+To generate animation, I wrote a python script to read in and modify the xml data, then output hundreds of scene files.  
+I rendered the transition from sunrise to sunset and also sealevel to space.
+You can take a look at them on youtube:   
+Time lapse: https://youtube.com/shorts/O2V1U5Pif4w  
+Rayleigh only Time lapse: https://youtube.com/shorts/AC7zdxW4wqI  
+From earth to space: https://youtube.com/shorts/Dkp57a4YYzA  
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
@@ -133,4 +147,7 @@ And there pdfs would just be $0.5 * HG_{pdf} + 0.5 * rayleigh_{pdf}$
 
 [7]: https://www.shadertoy.com/view/wlGBzh
 7: https://www.shadertoy.com/view/wlGBzh
+
+[8]: https://arxiv.org/pdf/1812.00799.pdf
+8: https://arxiv.org/pdf/1812.00799.pdf
 
