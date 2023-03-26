@@ -1,41 +1,29 @@
-# lajolla
-UCSD CSE 272 renderer
+# Rendering Atmospheric Scattering with Volumetric Path Tracing
+CSE272 WI23 Final project, Leo Cao
+## Introduction
 
-# Build
-All the dependencies are included. Use CMake to build.
-If you are on Unix systems, try
-```
-mkdir build
-cd build
-cmake ..
-```
-It requires compilers that support C++17 (gcc version >= 8, clang version >= 7, Apple Clang version >= 11.0, MSVC version >= 19.14).
+In this project, I built upon the volumetric path tracer we implemented in LaJolla
+to render realistic atmospheric effects.  
 
-Apple M1 users: you might need to build Embree from scratch since the prebuilt MacOS binary provided is built for x86 machines.
+I used physically based models and parameters for the earth, 
+the sun, and the atmosphere. My implementation also accounts for multiple scattering and global illumination, which is important 
+for physical rendering of sunset, sunrise, and the shadow of the Earth inside the atmosphere (the Belt of Venus effect).
 
-# Run
-Try 
-```
-cd build
-./lajolla ../scenes/cbox/cbox.xml
-```
-This will generate an image "image.pfm".
+## Physical Model and Parameters
 
-To view the image, use [hdrview](https://github.com/wkjarosz/hdrview), or [tev](https://github.com/Tom94/tev).
+  ### Astronomical Model
+  I modeled every object in space to-scale.  
+  The earth is modeled as a lambertian sphere with radius $Re = 6378 km$. [1]
+  If we are considering multiple scattering, the ground reflection of the sunlight into the atmosphere will actually make a difference in 
+  the color of the sky. As discussed in papers like Nishita Et al.'s "Display method of the sky color taking into account multiple scattering".
+  
+  
+  
+  For the radius of the Sun, I used 
 
-# Acknowledgement
-The renderer is heavily inspired by [pbrt](https://pbr-book.org/), [mitsuba](http://www.mitsuba-renderer.org/index_old.html), and [SmallVCM](http://www.smallvcm.com/).
+  ### Atmospheric Model
+  
+## References
+[1]: <https://en.wikipedia.org/wiki/Earth_radius>
+wikipedia for earth radius: https://en.wikipedia.org/wiki/Earth_radius  
 
-We use [Embree](https://www.embree.org/) for ray casting.
-
-We use [pugixml](https://pugixml.org/) to parse XML files.
-
-We use [pcg](https://www.pcg-random.org/) for random number generation.
-
-We use [stb_image](https://github.com/nothings/stb) and [tinyexr](https://github.com/syoyo/tinyexr) for reading & writing images.
-
-We use [miniz](https://github.com/richgel999/miniz) for compression & decompression.
-
-We use [tinyply](https://github.com/ddiakopoulos/tinyply) for parsing PLY files.
-
-Many scenes in the scenes folder are directly downloaded from [http://www.mitsuba-renderer.org/download.html](http://www.mitsuba-renderer.org/download.html). Scenes courtesy of Wenzel Jakob, Cornell Program of Computer Graphics, Marko Dabrovic, Eric Veach, Jonas Pilo, and Bernhard Vogl.
