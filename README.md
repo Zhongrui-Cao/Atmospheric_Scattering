@@ -50,9 +50,9 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
 
   ### Rayleigh  
   Lets say we have a $\theta$ that denotes the angle between the incomming ray and the direction of light. We need to have a phase function $P$ in order to 
-  figure out the light intensity being scattered out. P is given as:  
+  figure out the light intensity being scattered out. $P_r$ is given as:  
   
-  $$ P(\theta) = 3/4 * (1+cos^2(\theta))$$
+  $$ P_r(\theta) = 3/4 * (1+cos^2(\theta))$$
   
   We also need to know the scattering coefficient $\sigma_s$ of Rayleigh. It is given by:  
   
@@ -64,12 +64,31 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   $\lambda$ is the wavelength of light.  
   $\rho(h)$ is the density function, given before, as $e^{-h/H}$.  
   Notice how everything except the $\rho(h)$ is a constant, therefore we can precompute the scattering coefficient at sealevel, 
-  then multiply it by the density function: $\sigma_s(h) = \sigma_s(h=0) * e^{-h/H}$.  
+  then multiply it by the density function: $\sigma_s(h) = \sigma_s(h=0) * e^{-h/H}$. $H = 8.5km$ for air.  
   Since I am just using RGB for now, we can precompute the coefficient for the three color channels.  
   I am using:  
   $\sigma_s(\lambda=680nm) = 0.00519673173$ for red,  
   $\sigma_s(\lambda=550nm) = 0.01214269792$ for green,  
   $\sigma_s(\lambda=440nm) = 0.02964525861$ for blue. (all terms calculated in km)  
+  
+  ### Mie  
+  Mie scattering is responsible for the water vapor, causing white glories around the sun.  
+  Since the actual Mie is hard to implement, a few papers[6] approximate the Mie phase function with 
+  the Cornette-Shanks phase function. The Mie phase function exhibites strong forward scattering for water vapors, 
+  while still having backward scattering, which the Henyey Greenstein phase function could not approximate.[7]  
+  
+  The Cornette-Shanks phase function is given by:  
+  
+  $$ P_m(g, \theta) = 3/2 * \frac{(1-g^2)(1+cos^2(\theta))}{(2+g^2)(1+g^2-2gcos(\theta))^{3/2}} $$  
+  
+  Where $g$ is the term to determine forward or backward scattering. We will use $g = 0.76$ like in this paper.[6]  
+  
+  For the scattering term, we will do the same trick as before: $\sigma_s(h) = \sigma_s(h=0) * e^{-h/H}$ where $H = 1.2$ for water vapor.  
+  However unlike Rayleigh, water vapor does absorb some light. We will use $\sigma_s / \sigma_e = 0.9$ to approximate $\sigma_a$ for fitting the 
+  measurement data.[6]  
+  
+  
+  
   
   
   
@@ -93,4 +112,7 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
 
 [6]: https://hal.inria.fr/inria-00288758v1/document
 6: https://hal.inria.fr/inria-00288758v1/document
+
+[7]: https://www.shadertoy.com/view/wlGBzh
+7: https://www.shadertoy.com/view/wlGBzh
 
