@@ -142,11 +142,16 @@ This is caused by the backscatter of sunlight. The darker part at the bottom of 
 :-------------------------:|:-------------------------:
 ![](https://user-images.githubusercontent.com/49463679/227765542-604e8615-d210-4d3a-9037-ddb202025ee5.PNG)  |  ![](https://user-images.githubusercontent.com/49463679/227765631-53f16088-3d6b-4da4-b6d2-f38f8ea37782.PNG)
 
-### Aerial view
+### Aerial view & Sunset
 
   Sunset aerial            |  earth from space
 :-------------------------:|:-------------------------:
-![](https://user-images.githubusercontent.com/49463679/227765708-9fae6414-c040-4dc7-92a8-2b626b7d9ba4.PNG)  |  ![](https://user-images.githubusercontent.com/49463679/227765772-17c584e1-0040-405a-875d-50fc35df175b.PNG)
+ ![](https://user-images.githubusercontent.com/49463679/227765708-9fae6414-c040-4dc7-92a8-2b626b7d9ba4.PNG) |  ![](https://user-images.githubusercontent.com/49463679/227767649-f5e66d03-9968-4260-8f04-9ab3f2ca216b.png)
+
+
+  Sunset sealevel            |  aerial view of atmosphere
+:-------------------------:|:-------------------------:
+ ![](https://user-images.githubusercontent.com/49463679/227767338-8c89d62b-1e57-4387-8b8f-fc894dfe1dd7.png) | ![](https://user-images.githubusercontent.com/49463679/227767437-67df8735-e2f8-4fc6-aad6-ee2f6bfa8b50.png) 
 
 ## Limitations and Future work
 
