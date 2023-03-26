@@ -42,7 +42,7 @@
 
 
 	<shape type="sphere">
-		<point name="center" x="149429204.71376184" y="-13073361.412148725" z="0" />
+		<point name="center" x="0" y="150000000.0" z="0" />
 		<float name="radius" value="695700" />
 
 		<emitter type="area">
@@ -62,12 +62,12 @@
 		<float name="fov" value="90" />
 		<transform name="toWorld">
 
-			<lookAt target="6405, 8000, 0" origin="1, 6405, 1" up="0, 1, 0" />
+			<lookAt target="6385, 8000, 0" origin="1, 6385, 1" up="0, 1, 0" />
 
 		</transform>
 
 		<sampler type="independent">
-			<integer name="sampleCount" value="4096" />
+			<integer name="sampleCount" value="256" />
 		</sampler>
 
 		<film type="hdrfilm" id="film">

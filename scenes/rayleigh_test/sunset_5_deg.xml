@@ -59,20 +59,20 @@
 
 	<sensor type="perspective">
 		<string name="fovAxis" value="x" />
-		<float name="fov" value="90" />
+		<float name="fov" value="80" />
 		<transform name="toWorld">
 
-		<lookAt target="6378.1, 13000, 0" origin="0, 6378.1, 0" up="0, 1, 0" />
+		<lookAt target="6378.1, 10000, 0" origin="0, 6378.1, 0" up="0, 1, 0" />
 
 		</transform>
 
 		<sampler type="independent">
-			<integer name="sampleCount" value="1024" />
+			<integer name="sampleCount" value="4096" />
 		</sampler>
 
 		<film type="hdrfilm" id="film">
-			<integer name="width" value="512" />
-			<integer name="height" value="768" />
+			<integer name="width" value="1024" />
+			<integer name="height" value="1024" />
 			<string name="pixelFormat" value="rgb" />
 			<boolean name="banner" value="false" />
 
