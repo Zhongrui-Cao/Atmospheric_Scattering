@@ -159,6 +159,7 @@ This is caused by the backscatter of sunlight. The darker part at the bottom of 
 * Adding texture and height map of the earth
 * Improve the efficiency of volume rendering code
 * Change the parameters to simulate alien skys and sunsets
+* Consider the refraction of the atmosphere to account for the effect of sun getting flat during sunset.  
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
