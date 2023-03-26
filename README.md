@@ -2,7 +2,10 @@
 CSE272 WI23 Final project, Leo Cao  
 Under construction please don't grade yet   
 
-![ezgif-3-a13a1bbbd6](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)
+time lapse             |  space view
+:-------------------------:|:-------------------------:
+![](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)  |  ![](https://user-images.githubusercontent.com/49463679/227762243-1682d287-607f-4b49-89ec-0cac15f96da3.PNG)
+
 
 ## Introduction
 
@@ -87,12 +90,27 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   However unlike Rayleigh, water vapor does absorb some light. We will use $\sigma_s / \sigma_e = 0.9$ to approximate $\sigma_a$ for fitting the 
   measurement data.[6]  
   
-  
-  
-  
-  
-  
-  
+## Importance Sampling
+
+### Rayleigh
+To importance sample the Rayleigh phase function, I implemented the inverse transform sampling method in "_Importance sampling the Rayleigh phase function_" by Frisvad.  
+The math is a little weird, involves using Cardan’s formulas to solve a cubic function, but it comes down to this:  
+
+$$ u = -[(2)(2\xi_1-1)+(4(2\xi_1-1)^2+1)^{1/2}]^{1/3} $$
+
+$$ cos(\theta) = u - 1/u$$ 
+
+$$ azimuth = 2\pi\xi_2 $$  
+
+### Cornette-Shanks
+Sampling methods for the Cornette-Shanks phase function is a little hard to find, but its very close to the HG phase function 
+implemented in Lajolla, therefore I used the HG sampling method to approximate, which gave a pretty good result when testing.  
+
+### Together
+Since I assume the atmosphere is a even mixure of air molecules and water vapor, we can sample Rayleigh 50% of the time, and HG 50% of the time.  
+And there pdfs would just be $0.5 * HG_{pdf} + 0.5 * rayleigh_{pdf}$
+
+
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
