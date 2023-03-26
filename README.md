@@ -29,7 +29,21 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   
   ### Atmospheric Model
   To model the atmosphere of the earth, I took heavy inspiration from Nishita et al.'s paper "Display of the Earth Taking into Account Atmospheric Scattering".[5]  
-  In his paper, he modeled the atmosphere of the earth as 
+  The atmosphere is a layer of gas surrounding the earth. So I am modeling it as a ball of participating media arround the earth.  
+  The atmosphere is generally made up with air molecules(oxygen, nitrogen, argon), and water vapor/droplets.  
+  The air molecules are responsible for the Rayleigh scattering, resulting in color of the blue sky. While the water in the atmosphere is responsible 
+  for Mie scattering, resulting in the white "glare" we see arround the sun.  
+  The atmosphere have different layers, each layer higher into space generally have exponentially smaller density. To simplify my model, I will assume the atmosphere 
+  have only one layer, and the density of both air and water vapor decreases exponentially with height.  
+  Therefore, we can model the density using this function: 
+  
+  $$ d(h) = d(0)*e^{-h/H} $$
+  
+  Where $d$ is the density at height $h$. $H$ is called the scale height, it is used in atomospheric sciences. It denote how thick would this media be on earth when the density is uniform.  
+  The thickness of the atmosphere is usually defined by the Kármán line at $100km$.
+  However, since most of the scattering happens in the troposphere and the stratosphere, 
+  modeling the atmosphere with a thickness of $60km$ was shown to have better fitting to the measurement data. Denoted in "_Precomputed Atmospheric Scattering_" 
+  by Bruneton et al.[6] 
   
   
 ## References
@@ -48,4 +62,6 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
 [5]: http://nishitalab.org/user/nis/cdrom/sig93_nis.pdf
 5: http://nishitalab.org/user/nis/cdrom/sig93_nis.pdf
 
+[6]: https://hal.inria.fr/inria-00288758v1/document
+6: https://hal.inria.fr/inria-00288758v1/document
 
