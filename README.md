@@ -45,6 +45,12 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   modeling the atmosphere with a thickness of $60km$ was shown to have better fitting to the measurement data. Denoted in "_Precomputed Atmospheric Scattering_" 
   by Bruneton et al.[6] 
   
+## Phase functions and Implementation
+
+  ### Rayleigh 
+  Lets say we have a $\theta$ that denotes the angle between the incomming ray and the direction of light. We need to have a phase function $P$ in order to 
+  figure out the light intensity being scattered out.  
+  
   
 ## References
 [1]: <https://en.wikipedia.org/wiki/Earth_radius>  
