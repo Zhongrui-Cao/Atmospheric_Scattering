@@ -1,6 +1,6 @@
 # Rendering Atmospheric Scattering with Volumetric Path Tracing
 CSE272 WI23 Final project, Leo Cao  
-Under construction please don't grade yet  
+Under construction please don't grade yet   
 
 ![ezgif-3-a13a1bbbd6](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)
 
@@ -62,7 +62,16 @@ for physical rendering of sunset, sunrise, and the shadow of the Earth inside th
   $n = 1.00029$ is the index of refraction of air.  
   $N = 2.504 * 10^25$ is the molecular number density of air.  
   $\lambda$ is the wavelength of light.  
-  $\rho(h)$ is the density function, given before, as $e^{-h/H}$.
+  $\rho(h)$ is the density function, given before, as $e^{-h/H}$.  
+  Notice how everything except the $\rho(h)$ is a constant, therefore we can precompute the scattering coefficient at sealevel, 
+  then multiply it by the density function: $\sigma_s(h) = \sigma_s(h=0) * e^{-h/H}$.  
+  Since I am just using RGB for now, we can precompute the coefficient for the three color channels.  
+  I am using:  
+  $\sigma_s(\lambda=680nm) = 0.00519673173$ for red,  
+  $\sigma_s(\lambda=550nm) = 0.01214269792$ for green,  
+  $\sigma_s(\lambda=440nm) = 0.02964525861$ for blue. (all terms calculated in km)  
+  
+  
   
   
   
