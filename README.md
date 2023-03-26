@@ -173,3 +173,8 @@ This is caused by the backscatter of sunlight. The darker part at the bottom of 
 [8]: https://arxiv.org/pdf/1812.00799.pdf
 8: https://arxiv.org/pdf/1812.00799.pdf
 
+9: https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/simulating-sky/simulating-colors-of-the-sky.html
+
+10: https://arxiv.org/pdf/1612.04336.pdf
+
+11: https://www.alanzucconi.com/2017/10/10/atmospheric-scattering-3/
