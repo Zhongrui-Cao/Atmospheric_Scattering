@@ -1,6 +1,6 @@
 # Rendering Atmospheric Scattering with Volumetric Path Tracing
-CSE272 WI23 Final project, Leo Cao
-Under construction
+CSE272 WI23 Final project, Leo Cao  
+Under construction please don't grade yet  
 
 ![ezgif-3-a13a1bbbd6](https://user-images.githubusercontent.com/49463679/227759202-ad77364c-cf2a-4d06-9843-90cbce4a82d4.gif)
 
