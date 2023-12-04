@@ -7,7 +7,7 @@ time lapse             |  space view
 
 ## Introduction
 
-In this project, I built upon the volumetric path tracer we implemented in LaJolla
+In this project, I built upon the volumetric path tracer I implemented in LaJolla
 to render realistic atmospheric effects.  
 
 I used physically based models and parameters for the earth, 
